@@ -1,0 +1,146 @@
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.rowLabel {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.rowDesc {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 13px;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.toggle.active {
+  background: var(--accent);
+}
+
+.toggleKnob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  transition: transform var(--transition-fast);
+}
+
+.toggle.active .toggleKnob {
+  transform: translateX(22px);
+}
+
+/* Select */
+.settingsSelect {
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: var(--font-family);
+  cursor: pointer;
+  outline: none;
+}
+
+.settingsSelect option {
+  background: #1a1a2e;
+}
+
+/* Range slider */
+.range {
+  -webkit-appearance: none;
+  width: 140px;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  outline: none;
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* Color picker */
+.colorInput {
+  width: 40px;
+  height: 32px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  padding: 2px;
+}
+
+/* Button row for import/export */
+.btnRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-button);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.version {
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+  margin-top: 40px;
+}

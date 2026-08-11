@@ -1,0 +1,76 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: var(--card-width-medium, 120px);
+  height: var(--card-height-medium, 120px);
+  border-radius: var(--radius-card, 16px);
+  background: var(--bg-card, rgba(255, 255, 255, 0.05));
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-normal, 200ms ease);
+  outline: none;
+  overflow: hidden;
+  user-select: none;
+}
+
+.card:hover,
+.focused {
+  transform: scale(1.08);
+  border-color: var(--accent, #3b82f6);
+  box-shadow: var(--focus-shadow, 0 8px 32px rgba(59, 130, 246, 0.3));
+  background: var(--bg-card-focused, rgba(255, 255, 255, 0.1));
+  z-index: 10;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.iconWrapper {
+  margin-bottom: 8px;
+}
+
+.name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary, #fff);
+  text-align: center;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editButtons {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 4px;
+}
+
+.editBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-fast, 150ms ease);
+}
+
+.editBtn:hover {
+  background: var(--accent, #3b82f6);
+}
