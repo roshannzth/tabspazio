@@ -3,6 +3,9 @@ export interface ClockSettings {
   showSeconds: boolean;
   showDate: boolean;
   showGreeting: boolean;
+  greetingPrefix?: string;
+  greetingTitle?: string;
+  greetingSubtitle?: string;
 }
 
 export interface AppearanceSettings {
@@ -27,10 +30,18 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  clock: { format: '12h', showSeconds: false, showDate: false, showGreeting: true },
+  clock: {
+    format: '12h',
+    showSeconds: false,
+    showDate: false,
+    showGreeting: true,
+    greetingPrefix: 'Hello,',
+    greetingTitle: '',
+    greetingSubtitle: 'What will you watch today?',
+  },
   appearance: {
     background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',
-    backgroundType: 'image',
+    backgroundType: 'gradient',
     backgroundImage: './backgrounds/bg_unsplash.jpg',
     backgroundBlur: 0,
     backgroundOpacity: 1,

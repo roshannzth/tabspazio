@@ -166,6 +166,26 @@
   letter-spacing: 0.05em;
 }
 
+.textInput {
+  width: 100%;
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 180ms ease;
+  box-sizing: border-box;
+}
+
+.textInput:focus {
+  border-color: #6366f1;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+
 .segmentedToggle {
   display: flex;
   gap: 6px;
