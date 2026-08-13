@@ -4,7 +4,7 @@ import { ConfirmDeleteDialog } from '../dialogs/ConfirmDeleteDialog';
 import styles from './Settings.module.css';
 
 export default function DataSettings() {
-  const { exportConfig, importConfig } = useAppContext();
+  const { exportConfig, importConfig, resetAllData } = useAppContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -32,9 +32,14 @@ export default function DataSettings() {
       });
   };
 
-  const handleResetAll = () => {
-    localStorage.clear();
-    window.location.reload();
+  const handleResetAll = async () => {
+    try {
+      await resetAllData();
+      setMessage({ text: 'All data has been reset to clean state.', isError: false });
+      setTimeout(() => window.location.reload(), 800);
+    } catch (err: any) {
+      setMessage({ text: err.message || 'Failed to reset data.', isError: true });
+    }
   };
 
   return (
@@ -44,12 +49,14 @@ export default function DataSettings() {
       {message && (
         <div
           style={{
-            padding: '10px 14px',
-            borderRadius: '10px',
-            background: message.isError ? 'rgba(239,68,68,0.15)' : 'rgba(52,168,83,0.15)',
+            padding: '12px 18px',
+            borderRadius: '12px',
+            background: message.isError ? 'rgba(239, 68, 68, 0.15)' : 'rgba(52, 168, 83, 0.15)',
             color: message.isError ? '#f87171' : '#34a853',
-            fontSize: '0.85rem',
-            marginBottom: '16px',
+            fontSize: '0.9rem',
+            fontWeight: 600,
+            marginBottom: '20px',
+            border: `1px solid ${message.isError ? 'rgba(239,68,68,0.3)' : 'rgba(52,168,83,0.3)'}`,
           }}
         >
           {message.text}
@@ -60,7 +67,7 @@ export default function DataSettings() {
         {/* Export Card */}
         <div className={styles.cardBox}>
           <div className={styles.cardHeader}>Export Configuration</div>
-          <p className={styles.cardDesc}>Save your apps, pages and settings to a file.</p>
+          <p className={styles.cardDesc}>Save your apps, pages and settings to a JSON file.</p>
           <button className={styles.btnAction} onClick={handleExport}>
             <span>📥</span> Export to File
           </button>
@@ -69,7 +76,7 @@ export default function DataSettings() {
         {/* Import Card */}
         <div className={styles.cardBox}>
           <div className={styles.cardHeader}>Import Configuration</div>
-          <p className={styles.cardDesc}>Import a previously exported configuration file.</p>
+          <p className={styles.cardDesc}>Import a previously exported JSON configuration file.</p>
           <button className={styles.btnAction} onClick={() => fileInputRef.current?.click()}>
             <span>📤</span> Import from File
           </button>
@@ -85,7 +92,7 @@ export default function DataSettings() {
         {/* Reset All Data Card */}
         <div className={`${styles.cardBox} ${styles.dangerBox}`}>
           <div className={styles.cardHeader}>Reset All Data</div>
-          <p className={styles.cardDesc}>This will permanently delete all your data.</p>
+          <p className={styles.cardDesc}>This will permanently clear browser storage and reset the launcher to a clean state.</p>
           <button className={styles.btnDanger} onClick={() => setShowResetConfirm(true)}>
             <span>🗑️</span> Reset All Data
           </button>

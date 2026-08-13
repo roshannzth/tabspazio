@@ -3,7 +3,7 @@ import { App } from '../models/App';
 import { CustomPage } from '../models/Page';
 import { Category } from '../models/Category';
 import { Settings, DEFAULT_SETTINGS } from '../models/Settings';
-import { loadAllData, saveAllData, StorageSchema, CURRENT_SCHEMA_VERSION } from '../services/storage';
+import { loadAllData, saveAllData, clearAllData, StorageSchema, CURRENT_SCHEMA_VERSION } from '../services/storage';
 import { exportConfiguration, importConfiguration } from '../services/importExport';
 
 declare const chrome: any;
@@ -27,6 +27,7 @@ export interface AppContextType {
   reorderCategories: (categoryIds: string[]) => Promise<void>;
   updateSettings: (settings: Partial<Settings>) => Promise<void>;
   toggleFavorite: (id: string) => Promise<void>;
+  resetAllData: () => Promise<void>;
   exportConfig: () => Promise<void>;
   importConfig: (file: File) => Promise<{ success: boolean; error?: string }>;
 }
@@ -178,6 +179,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     await saveState({ apps: newApps });
   };
 
+  const resetAllData = async () => {
+    const cleanData = await clearAllData();
+    setApps(cleanData.apps);
+    setPages(cleanData.pages);
+    setCategories(cleanData.categories);
+    setSettings(cleanData.settings);
+  };
+
   const exportConfig = async () => {
     const data: StorageSchema = { version: CURRENT_SCHEMA_VERSION, apps, pages, categories, settings };
     exportConfiguration(data);
@@ -202,7 +211,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       addApp, updateApp, deleteApp, reorderApps,
       addPage, updatePage, deletePage,
       addCategory, updateCategory, deleteCategory, reorderCategories,
-      updateSettings, toggleFavorite, exportConfig, importConfig
+      updateSettings, toggleFavorite, resetAllData, exportConfig, importConfig
     }}>
       {children}
     </AppContext.Provider>

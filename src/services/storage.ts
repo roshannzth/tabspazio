@@ -43,3 +43,19 @@ export async function loadAllData(): Promise<StorageSchema> {
 export async function saveAllData(data: StorageSchema): Promise<void> {
   await browserAPI.storage.local.set({ [STORAGE_KEY]: data });
 }
+
+export async function clearAllData(): Promise<StorageSchema> {
+  const cleanData: StorageSchema = {
+    version: CURRENT_SCHEMA_VERSION,
+    apps: [],
+    pages: [],
+    categories: DEFAULT_CATEGORIES,
+    settings: DEFAULT_SETTINGS,
+  };
+  await browserAPI.storage.local.remove([STORAGE_KEY]);
+  await browserAPI.storage.local.set({ [STORAGE_KEY]: cleanData });
+  if (typeof localStorage !== 'undefined') {
+    localStorage.clear();
+  }
+  return cleanData;
+}
