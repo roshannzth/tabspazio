@@ -3,8 +3,10 @@ import { App } from '../models/App';
 import { CustomPage } from '../models/Page';
 import { Category } from '../models/Category';
 import { Settings, DEFAULT_SETTINGS } from '../models/Settings';
-import { loadAllData, saveAllData, StorageSchema } from '../services/storage';
+import { loadAllData, saveAllData, StorageSchema, CURRENT_SCHEMA_VERSION } from '../services/storage';
 import { exportConfiguration, importConfiguration } from '../services/importExport';
+
+declare const chrome: any;
 
 export interface AppContextType {
   apps: App[];
@@ -38,21 +40,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const refreshData = async () => {
+    const data = await loadAllData();
+    setApps(data.apps);
+    setPages(data.pages);
+    setCategories(data.categories);
+    setSettings(data.settings);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const init = async () => {
-      const data = await loadAllData();
-      setApps(data.apps);
-      setPages(data.pages);
-      setCategories(data.categories);
-      setSettings(data.settings);
-      setLoading(false);
+    refreshData();
+
+    // Listen for storage changes across multiple open tabs in real-time
+    const handleStorageChange = () => {
+      refreshData();
     };
-    init();
+
+    if (typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
+      chrome.storage.onChanged.addListener(handleStorageChange);
+      return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+    } else {
+      window.addEventListener('storage', handleStorageChange);
+      return () => window.removeEventListener('storage', handleStorageChange);
+    }
   }, []);
 
   const saveState = async (newState: Partial<StorageSchema>) => {
     const dataToSave: StorageSchema = {
-      version: 1,
+      version: CURRENT_SCHEMA_VERSION,
       apps: newState.apps || apps,
       pages: newState.pages || pages,
       categories: newState.categories || categories,
@@ -130,7 +146,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const deleteCategory = async (id: string) => {
     const newCategories = categories.filter(category => category.id !== id);
     setCategories(newCategories);
-    // Also remove this category from apps
     const newApps = apps.map(app => app.categoryId === id ? { ...app, categoryId: undefined } : app);
     setApps(newApps);
     await saveState({ categories: newCategories, apps: newApps });
@@ -158,13 +173,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const toggleFavorite = async (id: string) => {
-    const newApps = apps.map(app => app.id === id ? { ...app, isFavorite: !app.isFavorite } : app);
+    const newApps = apps.map(app => app.id === id ? { ...app, isFavorite: app.isFavorite === false ? true : false } : app);
     setApps(newApps);
     await saveState({ apps: newApps });
   };
 
   const exportConfig = async () => {
-    const data: StorageSchema = { version: 1, apps, pages, categories, settings };
+    const data: StorageSchema = { version: CURRENT_SCHEMA_VERSION, apps, pages, categories, settings };
     exportConfiguration(data);
   };
 
