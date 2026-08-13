@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import AppearanceSettings from './AppearanceSettings';
 import ClockSettings from './ClockSettings';
+import GreetingSettings from './GreetingSettings';
 import DataSettings from './DataSettings';
 import styles from './Settings.module.css';
 
-type SettingsTab = 'appearance' | 'clock' | 'backup' | 'about';
+type SettingsTab = 'appearance' | 'clock' | 'greeting' | 'backup' | 'about';
 
 export default function SettingsPanel() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('appearance');
@@ -24,7 +25,14 @@ export default function SettingsPanel() {
           className={`${styles.sidebarItem} ${activeTab === 'clock' ? styles.activeSidebarItem : ''}`}
           onClick={() => setActiveTab('clock')}
         >
-          <span className={styles.itemIcon}>⏰</span> Clock & Hero Text
+          <span className={styles.itemIcon}>⏰</span> Clock
+        </button>
+
+        <button
+          className={`${styles.sidebarItem} ${activeTab === 'greeting' ? styles.activeSidebarItem : ''}`}
+          onClick={() => setActiveTab('greeting')}
+        >
+          <span className={styles.itemIcon}>💬</span> Greeting
         </button>
 
         <button
@@ -46,6 +54,7 @@ export default function SettingsPanel() {
       <main className={styles.settingsContent}>
         {activeTab === 'appearance' && <AppearanceSettings />}
         {activeTab === 'clock' && <ClockSettings />}
+        {activeTab === 'greeting' && <GreetingSettings />}
         {activeTab === 'backup' && <DataSettings />}
         {activeTab === 'about' && (
           <div className={styles.aboutCard}>
