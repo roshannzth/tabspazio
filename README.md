@@ -1,104 +1,140 @@
-# TV Launcher Addon
+# 📺 TV Launcher Addon
 
-A highly customizable, premium Android TV / Google TV style launcher extension for your browser's New Tab page.
+A highly customizable, cinematic **Apple TV & Google TV style launcher extension** for your browser's New Tab page. Built with React 18, TypeScript, Vite, and CSS Modules.
 
-## Features
+---
 
-- **TV-Style Interface**: A beautiful, grid-based launcher that feels like a modern smart TV.
-- **Categorization**: Organize your favorite websites and web apps into categories.
-- **Custom Pages**: Create nested pages to group related apps (e.g., a "Work" page or a "Games" page).
-- **Keyboard Navigation**: Fully controllable with arrow keys, just like a real TV interface.
-- **Deep Customization**:
-  - Themes (Dark, Midnight, AMOLED)
-  - Custom backgrounds (Solid, Gradient, Image)
-  - Adjustable blur, opacity, and card sizes
-  - Configurable grid columns and clock formats
-- **Import/Export**: Easily backup and restore your configuration across different devices or browsers.
+## 📸 Screenshots
 
-## Screenshots
+### 1. Homescreen Launcher & Weather Widget
+![TV Launcher Homescreen Preview](./docs/screenshots/homescreen.png)
 
-*(Add screenshots here)*
+### 2. All Applications Drawer & Search
+![All Applications Drawer Preview](./docs/screenshots/all_apps_drawer.png)
 
-## Installation for Development
+---
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
+## ✨ Features
 
-## Building for Browsers
+- 🌟 **Apple TV Glassmorphic Interface**: Cinematic dark frosted glass tiles, dynamic accent glows, and fluid layout scaling.
+- 🎨 **Clean Slate Setup**: Starts with zero hardcoded default apps. Add your own custom web apps or import from a JSON configuration file.
+- 💬 **Customizable Hero Greeting**: Personalize your greeting prefix (e.g., *Hello,*), dynamic title (e.g., *Good Evening*), and subtitle (e.g., *What will you watch today?*).
+- 🌤️ **Live Open-Meteo Weather Integration**: Real-time temperature & condition widget next to the clock:
+  - 📍 Built-in city geocoding location search
+  - 🌡️ °C / °F unit toggle
+  - ⏱️ Customizable background auto-refresh frequency (15m to 60m)
+- 🎡 **Unlimited Horizontal Carousel Dock**: Add as many favorite apps as you want with smooth horizontal scrolling.
+- 📱 **All Applications Full-Screen Drawer**: Centered A-Z grid drawer with instant search bar, app tile customization, duplication, and quick context menu.
+- ⌨️ **2D Keyboard Navigation**: Fully navigable with arrow keys, Enter, and Escape — optimized for TV screens and media remotes.
+- 💾 **Full Backup & Sync**: Complete JSON export & import for apps, pages, categories, appearance, greeting, clock, and weather configurations.
+- 🔒 **100% Private & Local**: Zero tracking, zero ads, zero analytics. All data stays strictly local in your browser's extension storage (`chrome.storage.local`).
 
-Build the extension for your preferred browser using the following commands:
+---
 
-- **Google Chrome**:
-  ```bash
-  npm run build:chrome
-  ```
-- **Mozilla Firefox**:
-  ```bash
-  npm run build:firefox
-  ```
-- **Chromium / Edge / Opera**:
-  ```bash
-  npm run build:chromium
-  ```
-- **Build for all supported browsers**:
-  ```bash
-  npm run build:all
-  ```
+## 🛠️ Build & Installation for Development
 
-## Loading the Extension
+### Prerequisites
+- Node.js (v18 or higher)
+- npm
 
-### Chrome
-1. Navigate to `chrome://extensions`
-2. Enable **Developer mode** in the top right corner
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Run Local Development Server
+```bash
+npm run dev
+```
+
+---
+
+## 📦 Building for Target Browsers
+
+Build production extension bundles for your preferred target browser:
+
+```bash
+# Build for Google Chrome (Manifest V3)
+npm run build:chrome
+
+# Build for Mozilla Firefox
+npm run build:firefox
+
+# Build for Chromium / Edge / Opera / Brave
+npm run build:chromium
+
+# Build for all supported targets at once
+npm run build:all
+```
+
+The output extension bundles will be generated in:
+- `dist/chrome/`
+- `dist/firefox/`
+- `dist/chromium/`
+
+---
+
+## 🚀 Loading the Extension into Browsers
+
+### 🌐 Google Chrome & Brave
+1. Open `chrome://extensions`
+2. Enable **Developer mode** (toggle switch in the top-right corner)
 3. Click **Load unpacked**
-4. Select the `dist/chrome/` directory from this project
+4. Select the `dist/chrome/` folder
 
-### Firefox
-1. Navigate to `about:debugging`
+### 🦊 Mozilla Firefox
+1. Open `about:debugging`
 2. Click **This Firefox** on the left sidebar
-3. Click **Load Temporary Add-on**
-4. Select the `dist/firefox/manifest.json` file from this project
+3. Click **Load Temporary Add-on...**
+4. Select `dist/firefox/manifest.json`
 
-### Microsoft Edge
-1. Navigate to `edge://extensions`
-2. Enable **Developer mode** in the bottom left corner
+### 🌊 Microsoft Edge
+1. Open `edge://extensions`
+2. Enable **Developer mode** (toggle switch in bottom-left corner)
 3. Click **Load unpacked**
-4. Select the `dist/chromium/` directory (Edge is fully compatible with Chromium builds)
+4. Select the `dist/chromium/` folder
 
-### Opera
-1. Navigate to `opera://extensions`
-2. Enable **Developer mode** in the top right corner
+### 🔴 Opera
+1. Open `opera://extensions`
+2. Enable **Developer mode** (toggle switch in top-right corner)
 3. Click **Load unpacked**
-4. Select the `dist/chromium/` directory (Opera is fully compatible with Chromium builds)
+4. Select the `dist/chromium/` folder
 
-## Project Structure
+---
 
-- `src/components/`: Reusable React components (Launcher, Settings, Dialogs, etc.)
-- `src/pages/`: Main application routes (Home, Settings, Custom Pages)
-- `src/context/`: Global state management
-- `src/hooks/`: Custom React hooks for logic and keyboard navigation
-- `src/models/`: TypeScript interfaces and types
-- `src/browser/`: Browser extension API wrappers
+## 📁 Project Architecture
 
-## Technology Stack
+```text
+tv-launcher-addon/
+├── manifests/              # Browser manifest manifests (Chrome, Firefox, Chromium)
+├── scripts/                # Post-build packaging scripts
+├── src/
+│   ├── browser/            # Cross-browser extension API wrappers (storage, tabs, runtime)
+│   ├── components/
+│   │   ├── common/         # CustomSelect, Header, IconPicker, FallbackIcon
+│   │   ├── dialogs/        # AddApp, EditApp, ConfirmDelete dialogs
+│   │   ├── launcher/       # AppCard, AllAppsDrawer, WeatherWidget, HeroHeader, ContextMenu
+│   │   └── settings/       # Appearance, Clock, Greeting, Weather, Backup & Sync, About
+│   ├── context/            # AppContext state manager & storage persistence
+│   ├── data/               # Default apps & category schemas
+│   ├── hooks/              # useWeather, useClock, useKeyboardNavigation, useSettings
+│   ├── models/             # TypeScript interfaces (App, Settings, Category)
+│   ├── pages/              # HomePage, SettingsPage
+│   └── services/           # storage, migration, favicon, importExport
+└── vite.config.ts          # Vite extension configuration
+```
 
-- React 18
-- TypeScript
-- Vite
-- React Router DOM
-- CSS Modules & Vanilla CSS Variables
+---
 
-## Privacy Policy
+## 🛡️ Privacy & Security
 
-This extension is built with privacy in mind. It does **not** track your usage, collect analytics, or communicate with any external servers. All data (including your custom links, categories, and settings) is stored locally on your device using the browser's local storage API.
+TV Launcher Addon is committed to user privacy:
+- No tracking or telemetry
+- No external server dependencies (weather uses Open-Meteo's open public API)
+- All configuration data is stored locally in `chrome.storage.local`
 
-## License
+---
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📜 License
+
+This project is licensed under the **MIT License**.
