@@ -22,22 +22,26 @@
   justify-content: center;
   padding: 0 clamp(16px, 3vw, 40px);
   width: 100%;
+  box-sizing: border-box;
 }
 
 .floatingDock {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 20px);
+  flex-wrap: nowrap;
+  gap: clamp(12px, 1.4vw, 22px);
   background: rgba(18, 20, 29, 0.72);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: clamp(20px, 2.2vw, 36px);
-  padding: clamp(10px, 1.2vw, 18px) clamp(14px, 1.6vw, 24px);
+  padding: clamp(12px, 1.4vw, 20px) clamp(16px, 1.8vw, 28px);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
   overflow-x: auto;
-  max-width: 95vw;
+  max-width: calc(100vw - 80px);
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
 }
 
 .floatingDock::-webkit-scrollbar {

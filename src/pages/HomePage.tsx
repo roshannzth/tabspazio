@@ -88,8 +88,16 @@ export default function HomePage() {
 
   const handleWheel = (e: React.WheelEvent) => {
     // Scrolling down on homescreen opens All Applications drawer
-    if (e.deltaY > 20 && !showAllApps && !showAddApp && !showAddPage && !showAddCategory && !editingApp && !contextMenu && !deleteTarget) {
+    if (e.deltaY > 30 && !showAllApps && !showAddApp && !showAddPage && !showAddCategory && !editingApp && !contextMenu && !deleteTarget) {
       setShowAllApps(true);
+    }
+  };
+
+  const handleDockWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    // Smooth horizontal scroll for the favorite dock
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      e.stopPropagation();
+      e.currentTarget.scrollLeft += e.deltaY * 1.5;
     }
   };
 
@@ -105,10 +113,10 @@ export default function HomePage() {
         <EmptyState onAddApp={() => setShowAddApp(true)} />
       ) : (
         <div className={styles.mainContent}>
-          {/* Favorites Floating Glass Dock Container (Renders ONLY when favorites exist) */}
+          {/* Favorites Floating Glass Dock Container with Smooth Horizontal Scroll */}
           {favoriteApps.length > 0 && (
             <div className={styles.dockWrapper}>
-              <div className={styles.floatingDock}>
+              <div className={styles.floatingDock} onWheel={handleDockWheel}>
                 {favoriteApps.map((app) => (
                   <AppCard
                     key={app.id}
