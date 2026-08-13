@@ -9,7 +9,7 @@ import { DEFAULT_CATEGORIES } from '../data/defaultCategories';
 import { DEFAULT_PAGES } from '../data/defaultPages';
 import { DEFAULT_SETTINGS } from '../models/Settings';
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 3;
 
 export interface StorageSchema {
   version: number;
@@ -26,13 +26,15 @@ export async function loadAllData(): Promise<StorageSchema> {
   const data = result[STORAGE_KEY];
   
   if (!data) {
-    return {
+    const initialData = {
       version: CURRENT_SCHEMA_VERSION,
       apps: DEFAULT_APPS,
       categories: DEFAULT_CATEGORIES,
       pages: DEFAULT_PAGES,
       settings: DEFAULT_SETTINGS,
     };
+    await saveAllData(initialData);
+    return initialData;
   }
   
   return migrateData(data);

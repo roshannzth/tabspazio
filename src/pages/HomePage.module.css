@@ -1,0 +1,71 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mainContent {
+  position: relative;
+  z-index: 10;
+  margin-top: auto;
+  padding-bottom: clamp(12px, 2vh, 28px);
+}
+
+.dockWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 clamp(16px, 3vw, 40px);
+  width: 100%;
+}
+
+.floatingDock {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 20px);
+  background: rgba(18, 20, 29, 0.72);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: clamp(20px, 2.2vw, 36px);
+  padding: clamp(10px, 1.2vw, 18px) clamp(14px, 1.6vw, 24px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+  overflow-x: auto;
+  max-width: 95vw;
+  scrollbar-width: none;
+}
+
+.floatingDock::-webkit-scrollbar {
+  display: none;
+}
+
+.bottomChevronRow {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(12px, 1.8vh, 24px);
+}
+
+.chevronBtn {
+  width: clamp(36px, 3vw, 44px);
+  height: clamp(36px, 3vw, 44px);
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(1.1rem, 1.3vw, 1.4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.chevronBtn:hover {
+  color: #ffffff;
+  transform: translateY(3px);
+}

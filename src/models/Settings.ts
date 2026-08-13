@@ -13,7 +13,7 @@ export interface AppearanceSettings {
   backgroundOpacity: number;
   cardSize: 'small' | 'medium' | 'large';
   borderRadius: number;
-  theme: 'dark' | 'midnight' | 'amoled';
+  theme: 'dark' | 'midnight' | 'amoled' | 'darker';
 }
 
 export interface LauncherSettings {
@@ -29,14 +29,15 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  clock: { format: '12h', showSeconds: false, showDate: true, showGreeting: true },
+  clock: { format: '12h', showSeconds: false, showDate: false, showGreeting: true },
   appearance: {
     background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',
-    backgroundType: 'gradient',
+    backgroundType: 'image',
+    backgroundImage: './backgrounds/bg_unsplash.jpg',
     backgroundBlur: 0,
     backgroundOpacity: 1,
     cardSize: 'medium',
-    borderRadius: 16,
+    borderRadius: 22,
     theme: 'dark',
   },
   launcher: { columns: 6, animations: true, showCategoryLabels: true },

@@ -1,21 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppearanceSettings from './AppearanceSettings';
 import ClockSettings from './ClockSettings';
 import LauncherSettings from './LauncherSettings';
 import DataSettings from './DataSettings';
 import styles from './Settings.module.css';
 
+type SettingsTab = 'appearance' | 'clock' | 'launcher' | 'backup' | 'about';
+
 export default function SettingsPanel() {
+  const [activeTab, setActiveTab] = useState<SettingsTab>('appearance');
+
   return (
-    <div className={styles.container}>
-      <AppearanceSettings />
-      <ClockSettings />
-      <LauncherSettings />
-      <DataSettings />
-      
-      <div className={styles.version}>
-        TV Launcher v1.0.0
-      </div>
+    <div className={styles.settingsLayout}>
+      {/* Left Navigation Sidebar */}
+      <aside className={styles.settingsSidebar}>
+        <button
+          className={`${styles.sidebarItem} ${activeTab === 'appearance' ? styles.activeSidebarItem : ''}`}
+          onClick={() => setActiveTab('appearance')}
+        >
+          <span className={styles.itemIcon}>🎨</span> Appearance
+        </button>
+
+        <button
+          className={`${styles.sidebarItem} ${activeTab === 'clock' ? styles.activeSidebarItem : ''}`}
+          onClick={() => setActiveTab('clock')}
+        >
+          <span className={styles.itemIcon}>⏰</span> Clock
+        </button>
+
+        <button
+          className={`${styles.sidebarItem} ${activeTab === 'launcher' ? styles.activeSidebarItem : ''}`}
+          onClick={() => setActiveTab('launcher')}
+        >
+          <span className={styles.itemIcon}>🚀</span> Launcher
+        </button>
+
+        <button
+          className={`${styles.sidebarItem} ${activeTab === 'backup' ? styles.activeSidebarItem : ''}`}
+          onClick={() => setActiveTab('backup')}
+        >
+          <span className={styles.itemIcon}>💾</span> Backup & Sync
+        </button>
+
+        <button
+          className={`${styles.sidebarItem} ${activeTab === 'about' ? styles.activeSidebarItem : ''}`}
+          onClick={() => setActiveTab('about')}
+        >
+          <span className={styles.itemIcon}>ℹ️</span> About
+        </button>
+      </aside>
+
+      {/* Main Settings Content Area */}
+      <main className={styles.settingsContent}>
+        {activeTab === 'appearance' && <AppearanceSettings />}
+        {activeTab === 'clock' && <ClockSettings />}
+        {activeTab === 'launcher' && <LauncherSettings />}
+        {activeTab === 'backup' && <DataSettings />}
+        {activeTab === 'about' && (
+          <div className={styles.aboutCard}>
+            <h2 className={styles.aboutTitle}>TV Launcher Addon</h2>
+            <p className={styles.aboutVersion}>Version 1.0.0</p>
+            <p className={styles.aboutDesc}>
+              A commercial-grade, cross-browser TV style app launcher replacement for your browser's New Tab page.
+            </p>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

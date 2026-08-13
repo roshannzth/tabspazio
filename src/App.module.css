@@ -4,12 +4,25 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  background: #080a10;
 }
 
 .background {
   position: fixed;
+  inset: -20px;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.vignette {
+  position: fixed;
   inset: 0;
   z-index: 0;
+  background: 
+    linear-gradient(to bottom, rgba(8, 10, 16, 0.45) 0%, transparent 35%, rgba(8, 10, 16, 0.75) 100%),
+    linear-gradient(to right, rgba(8, 10, 16, 0.65) 0%, rgba(8, 10, 16, 0.2) 40%, transparent 100%);
+  pointer-events: none;
 }
 
 .content {
@@ -27,7 +40,6 @@
   font-size: 1.1rem;
 }
 
-/* Base styles for no-animations body class */
 :global(.no-animations) * {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;

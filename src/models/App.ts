@@ -8,4 +8,5 @@ export interface App {
   background?: string;
   categoryId?: string;
   order: number;
+  isFavorite?: boolean;
 }

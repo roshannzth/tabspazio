@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.iconBox {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+  opacity: 0.6;
+}
+
+.gridSquare {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 2px solid #ffffff;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 360px;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.addBtn {
+  padding: 12px 28px;
+  background: #6366f1;
+  border: none;
+  border-radius: 9999px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  transition: all 200ms ease;
+}
+
+.addBtn:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+}

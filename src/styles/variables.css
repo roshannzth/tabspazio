@@ -1,70 +1,53 @@
 :root {
   /* Colors */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #14141f;
+  --bg-primary: #07080e;
+  --bg-secondary: #11131c;
   --bg-card: rgba(255, 255, 255, 0.06);
   --bg-card-hover: rgba(255, 255, 255, 0.12);
-  --bg-card-focused: rgba(255, 255, 255, 0.15);
-  --bg-dialog: rgba(20, 20, 35, 0.95);
+  --bg-card-focused: rgba(255, 255, 255, 0.18);
+  --bg-dialog: #121420;
+  --bg-dialog-overlay: rgba(5, 6, 10, 0.85);
   
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-tertiary: rgba(255, 255, 255, 0.4);
+  --text-tertiary: rgba(255, 255, 255, 0.45);
   
   --accent: #6366f1;
-  --accent-hover: #818cf8;
+  --accent-hover: #4f46e5;
+  --accent-light: rgba(99, 102, 241, 0.15);
   --accent-glow: rgba(99, 102, 241, 0.4);
   
   --danger: #ef4444;
-  --danger-hover: #f87171;
+  --danger-hover: #dc2626;
+  --danger-light: rgba(239, 68, 68, 0.15);
   
   --border: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(99, 102, 241, 0.6);
+  --border-focus: #6366f1;
   
-  --focus-shadow: 0 0 0 3px var(--accent), 0 0 30px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.5);
+  --focus-shadow: 0 0 0 3px #6366f1, 0 0 25px rgba(99, 102, 241, 0.5), 0 8px 32px rgba(0, 0, 0, 0.6);
   
-  /* Card sizes */
-  --card-width-small: 120px;
-  --card-height-small: 85px;
-  --card-width-medium: 160px;
-  --card-height-medium: 115px;
-  --card-width-large: 200px;
-  --card-height-large: 145px;
+  /* Dimensions */
+  --card-size: 110px;
+  --card-radius: 18px;
+  --pill-radius: 9999px;
+  --dialog-radius: 20px;
   
-  /* Spacing */
-  --gap: 16px;
-  --gap-lg: 24px;
-  --section-gap: 48px;
-  --page-padding: 60px;
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
   
-  /* Typography - system font stack */
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  
-  /* Animation */
+  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Border radius */
-  --radius-card: 16px;
-  --radius-dialog: 20px;
-  --radius-button: 10px;
-  --radius-input: 10px;
 }
 
-/* Midnight theme */
+[data-theme='darker'] {
+  --bg-primary: #040508;
+  --bg-secondary: #0a0b12;
+  --bg-dialog: #0e1018;
+}
+
 [data-theme='midnight'] {
   --bg-primary: #070720;
   --bg-secondary: #0e0e30;
-  --bg-card: rgba(100, 100, 255, 0.06);
-  --bg-card-hover: rgba(100, 100, 255, 0.12);
   --accent: #818cf8;
-}
-
-/* AMOLED theme */
-[data-theme='amoled'] {
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.08);
 }

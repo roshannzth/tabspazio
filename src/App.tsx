@@ -43,6 +43,7 @@ function AppContent() {
       data-theme={appearance.theme}
     >
       <div className={styles.background} style={backgroundStyle} />
+      <div className={styles.vignette} />
       <div className={styles.content}>
         <HashRouter>
           <Routes>

@@ -1,146 +1,117 @@
 import React from 'react';
-import { useAppContext } from '../../context/AppContext';
+import { useSettings } from '../../hooks/useSettings';
 import styles from './Settings.module.css';
-import { AppearanceSettings as AppearanceSettingsType } from '../../models/Settings';
 
 export default function AppearanceSettings() {
-  const { settings, updateSettings } = useAppContext();
+  const { settings, updateSettings } = useSettings();
   const { appearance } = settings;
-
-  const update = (updates: Partial<AppearanceSettingsType>) => {
-    updateSettings({ appearance: { ...appearance, ...updates } });
-  };
 
   return (
     <div className={styles.section}>
       <h2 className={styles.sectionTitle}>Appearance</h2>
 
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Theme</div>
-          <div className={styles.rowDesc}>Select the color scheme</div>
+      {/* Background Segmented Buttons */}
+      <div className={styles.settingBlock}>
+        <div className={styles.settingLabel}>Background</div>
+        <div className={styles.segmentedToggle}>
+          <button
+            className={`${styles.segmentBtn} ${appearance.backgroundType === 'image' ? styles.activeSegment : ''}`}
+            onClick={() => updateSettings({ appearance: { ...appearance, backgroundType: 'image' } })}
+          >
+            Image
+          </button>
+          <button
+            className={`${styles.segmentBtn} ${appearance.backgroundType === 'gradient' ? styles.activeSegment : ''}`}
+            onClick={() => updateSettings({ appearance: { ...appearance, backgroundType: 'gradient' } })}
+          >
+            Gradient
+          </button>
+          <button
+            className={`${styles.segmentBtn} ${appearance.backgroundType === 'solid' ? styles.activeSegment : ''}`}
+            onClick={() => updateSettings({ appearance: { ...appearance, backgroundType: 'solid' } })}
+          >
+            Solid Color
+          </button>
         </div>
-        <select
-          className={styles.settingsSelect}
-          value={appearance.theme}
-          onChange={(e) => update({ theme: e.target.value as any })}
-        >
-          <option value="dark">Dark</option>
-          <option value="midnight">Midnight</option>
-          <option value="amoled">AMOLED</option>
-        </select>
+
+        {appearance.backgroundType === 'image' && (
+          <div className={styles.imagePreviewRow}>
+            <div
+              className={styles.imageThumbnail}
+              style={{
+                backgroundImage: `url(${appearance.backgroundImage || 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400'})`,
+              }}
+            />
+            <button
+              className={styles.btnSecondary}
+              onClick={() => {
+                const url = prompt('Enter Image URL:', appearance.backgroundImage || '');
+                if (url !== null) {
+                  updateSettings({ appearance: { ...appearance, backgroundImage: url } });
+                }
+              }}
+            >
+              Change Image
+            </button>
+          </div>
+        )}
       </div>
 
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Background Type</div>
-        </div>
-        <select
-          className={styles.settingsSelect}
-          value={appearance.backgroundType}
-          onChange={(e) => update({ backgroundType: e.target.value as any })}
-        >
-          <option value="solid">Solid Color</option>
-          <option value="gradient">Gradient</option>
-          <option value="image">Image</option>
-        </select>
-      </div>
-
-      {appearance.backgroundType !== 'image' && (
-        <div className={styles.row}>
-          <div>
-            <div className={styles.rowLabel}>Background Color / Gradient</div>
-          </div>
-          {appearance.backgroundType === 'solid' ? (
-            <input
-              type="color"
-              className={styles.colorInput}
-              value={appearance.background || '#000000'}
-              onChange={(e) => update({ background: e.target.value })}
-            />
-          ) : (
-            <input
-              type="text"
-              className={styles.settingsSelect}
-              value={appearance.background || ''}
-              onChange={(e) => update({ background: e.target.value })}
-              placeholder="linear-gradient(...)"
-            />
-          )}
-        </div>
-      )}
-
-      {appearance.backgroundType === 'image' && (
-        <div className={styles.row}>
-          <div>
-            <div className={styles.rowLabel}>Background Image URL</div>
-          </div>
-          <input
-            type="text"
-            className={styles.settingsSelect}
-            value={appearance.backgroundImage || ''}
-            onChange={(e) => update({ backgroundImage: e.target.value })}
-            placeholder="https://..."
-          />
-        </div>
-      )}
-
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Background Blur</div>
+      {/* Overlay Opacity Slider */}
+      <div className={styles.settingBlock}>
+        <div className={styles.sliderRow}>
+          <span className={styles.settingLabel}>Overlay Opacity</span>
+          <span className={styles.sliderValue}>{Math.round(appearance.backgroundOpacity * 100)}%</span>
         </div>
         <input
           type="range"
-          className={styles.range}
           min="0"
-          max="20"
-          value={appearance.backgroundBlur}
-          onChange={(e) => update({ backgroundBlur: parseInt(e.target.value) })}
-        />
-      </div>
-
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Background Opacity</div>
-        </div>
-        <input
-          type="range"
-          className={styles.range}
-          min="0.1"
           max="1"
-          step="0.1"
+          step="0.05"
+          className={styles.slider}
           value={appearance.backgroundOpacity}
-          onChange={(e) => update({ backgroundOpacity: parseFloat(e.target.value) })}
+          onChange={(e) =>
+            updateSettings({ appearance: { ...appearance, backgroundOpacity: parseFloat(e.target.value) } })
+          }
         />
       </div>
 
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Card Size</div>
-        </div>
-        <select
-          className={styles.settingsSelect}
-          value={appearance.cardSize}
-          onChange={(e) => update({ cardSize: e.target.value as any })}
-        >
-          <option value="small">Small</option>
-          <option value="medium">Medium</option>
-          <option value="large">Large</option>
-        </select>
-      </div>
-
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Border Radius</div>
+      {/* Blur Slider */}
+      <div className={styles.settingBlock}>
+        <div className={styles.sliderRow}>
+          <span className={styles.settingLabel}>Blur</span>
+          <span className={styles.sliderValue}>{appearance.backgroundBlur}px</span>
         </div>
         <input
           type="range"
-          className={styles.range}
           min="0"
-          max="32"
-          value={appearance.borderRadius}
-          onChange={(e) => update({ borderRadius: parseInt(e.target.value) })}
+          max="40"
+          step="1"
+          className={styles.slider}
+          value={appearance.backgroundBlur}
+          onChange={(e) =>
+            updateSettings({ appearance: { ...appearance, backgroundBlur: parseInt(e.target.value, 10) } })
+          }
         />
+      </div>
+
+      {/* Theme Selector (Dark vs Darker) */}
+      <div className={styles.settingBlock}>
+        <div className={styles.settingLabel}>Theme</div>
+        <div className={styles.segmentedToggle}>
+          <button
+            className={`${styles.segmentBtn} ${appearance.theme === 'dark' ? styles.activeSegment : ''}`}
+            onClick={() => updateSettings({ appearance: { ...appearance, theme: 'dark' } })}
+          >
+            Dark
+          </button>
+          <button
+            className={`${styles.segmentBtn} ${appearance.theme === 'amoled' || appearance.theme === 'darker' ? styles.activeSegment : ''}`}
+            onClick={() => updateSettings({ appearance: { ...appearance, theme: 'darker' } })}
+          >
+            Darker
+          </button>
+        </div>
       </div>
     </div>
   );

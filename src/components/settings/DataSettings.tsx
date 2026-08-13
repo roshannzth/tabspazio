@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
+import { ConfirmDeleteDialog } from '../dialogs/ConfirmDeleteDialog';
 import styles from './Settings.module.css';
-import { ConfirmDialog } from '../dialogs/ConfirmDialog';
 
 export default function DataSettings() {
   const { exportConfig, importConfig } = useAppContext();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [showConfirm, setShowConfirm] = useState(false);
+
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [message, setMessage] = useState<{ text: string; isError: boolean } | null>(null);
 
   const handleExport = async () => {
@@ -24,73 +25,79 @@ export default function DataSettings() {
     importConfig(file)
       .then(() => {
         setMessage({ text: 'Configuration imported successfully.', isError: false });
-        setTimeout(() => window.location.reload(), 1500);
+        setTimeout(() => window.location.reload(), 1200);
       })
       .catch((err) => {
         setMessage({ text: err.message || 'Failed to import configuration.', isError: true });
       });
   };
 
-  const handleReset = () => {
+  const handleResetAll = () => {
     localStorage.clear();
     window.location.reload();
   };
 
   return (
     <div className={styles.section}>
-      <h2 className={styles.sectionTitle}>Data & Backup</h2>
+      <h2 className={styles.sectionTitle}>Backup & Sync</h2>
 
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Export / Import</div>
-          <div className={styles.rowDesc}>Backup or restore your layout and settings</div>
-          
-          {message && (
-            <div style={{ marginTop: '8px', color: message.isError ? '#ff4d4f' : '#52c41a', fontSize: '0.85rem' }}>
-              {message.text}
-            </div>
-          )}
+      {message && (
+        <div
+          style={{
+            padding: '10px 14px',
+            borderRadius: '10px',
+            background: message.isError ? 'rgba(239,68,68,0.15)' : 'rgba(52,168,83,0.15)',
+            color: message.isError ? '#f87171' : '#34a853',
+            fontSize: '0.85rem',
+            marginBottom: '16px',
+          }}
+        >
+          {message.text}
+        </div>
+      )}
 
-          <div className={styles.btnRow}>
-            <button className={styles.btn} onClick={handleExport}>Export Configuration</button>
-            <button className={styles.btn} onClick={() => fileInputRef.current?.click()}>Import Configuration</button>
-            <input 
-              type="file" 
-              accept=".json" 
-              ref={fileInputRef} 
-              style={{ display: 'none' }} 
-              onChange={handleImport} 
-            />
-          </div>
+      <div className={styles.backupGrid}>
+        {/* Export Card */}
+        <div className={styles.cardBox}>
+          <div className={styles.cardHeader}>Export Configuration</div>
+          <p className={styles.cardDesc}>Save your apps, pages and settings to a file.</p>
+          <button className={styles.btnAction} onClick={handleExport}>
+            <span>📥</span> Export to File
+          </button>
+        </div>
+
+        {/* Import Card */}
+        <div className={styles.cardBox}>
+          <div className={styles.cardHeader}>Import Configuration</div>
+          <p className={styles.cardDesc}>Import a previously exported configuration file.</p>
+          <button className={styles.btnAction} onClick={() => fileInputRef.current?.click()}>
+            <span>📤</span> Import from File
+          </button>
+          <input
+            type="file"
+            accept=".json"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleImport}
+          />
+        </div>
+
+        {/* Reset All Data Card */}
+        <div className={`${styles.cardBox} ${styles.dangerBox}`}>
+          <div className={styles.cardHeader}>Reset All Data</div>
+          <p className={styles.cardDesc}>This will permanently delete all your data.</p>
+          <button className={styles.btnDanger} onClick={() => setShowResetConfirm(true)}>
+            <span>🗑️</span> Reset All Data
+          </button>
         </div>
       </div>
 
-      <div className={styles.row}>
-        <div>
-          <div className={styles.rowLabel}>Reset</div>
-          <div className={styles.rowDesc}>Reset all settings and apps to default</div>
-          
-          <div className={styles.btnRow}>
-            <button 
-              className={styles.btn} 
-              style={{ color: '#ff4d4f', borderColor: 'rgba(255, 77, 79, 0.3)' }} 
-              onClick={() => setShowConfirm(true)}
-            >
-              Reset to Defaults
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {showConfirm && (
-        <ConfirmDialog
-          title="Reset to Defaults"
-          message="Are you sure you want to reset all settings, apps, and pages to their defaults? This action cannot be undone."
-          confirmLabel="Reset"
-          cancelLabel="Cancel"
-          isDanger={true}
-          onConfirm={handleReset}
-          onCancel={() => setShowConfirm(false)}
+      {showResetConfirm && (
+        <ConfirmDeleteDialog
+          title="Reset All Data?"
+          message="This will permanently delete all your custom apps, pages, categories, and settings. This action cannot be undone."
+          onConfirm={handleResetAll}
+          onCancel={() => setShowResetConfirm(false)}
         />
       )}
     </div>

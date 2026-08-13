@@ -24,6 +24,7 @@ export interface AppContextType {
   deleteCategory: (id: string) => Promise<void>;
   reorderCategories: (categoryIds: string[]) => Promise<void>;
   updateSettings: (settings: Partial<Settings>) => Promise<void>;
+  toggleFavorite: (id: string) => Promise<void>;
   exportConfig: () => Promise<void>;
   importConfig: (file: File) => Promise<{ success: boolean; error?: string }>;
 }
@@ -156,6 +157,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     await saveState({ settings: newSettings });
   };
 
+  const toggleFavorite = async (id: string) => {
+    const newApps = apps.map(app => app.id === id ? { ...app, isFavorite: !app.isFavorite } : app);
+    setApps(newApps);
+    await saveState({ apps: newApps });
+  };
+
   const exportConfig = async () => {
     const data: StorageSchema = { version: 1, apps, pages, categories, settings };
     exportConfiguration(data);
@@ -180,7 +187,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       addApp, updateApp, deleteApp, reorderApps,
       addPage, updatePage, deletePage,
       addCategory, updateCategory, deleteCategory, reorderCategories,
-      updateSettings, exportConfig, importConfig
+      updateSettings, toggleFavorite, exportConfig, importConfig
     }}>
       {children}
     </AppContext.Provider>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { App } from '../../models/App';
-import { getFaviconUrl } from '../../services/favicon';
-import { FallbackIcon } from '../common/FallbackIcon';
+import { getFaviconUrl, getInitials, getColorFromString } from '../../services/favicon';
 import styles from './AppCard.module.css';
 
 interface AppCardProps {
@@ -13,6 +12,8 @@ interface AppCardProps {
   isEditMode?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
+  showFavoriteToggle?: boolean;
+  onToggleFavorite?: () => void;
 }
 
 export function AppCard({
@@ -22,18 +23,15 @@ export function AppCard({
   onClick,
   onContextMenu,
   isEditMode,
-  onEdit,
   onDelete,
+  showFavoriteToggle,
+  onToggleFavorite,
 }: AppCardProps) {
   const [imageError, setImageError] = useState(false);
 
-  const getIconSource = () => {
-    if (app.icon) return app.icon;
-    if (app.url && app.type === 'website') return getFaviconUrl(app.url, 64);
-    return null;
-  };
-
-  const iconSrc = getIconSource();
+  const faviconUrl = app.icon || (app.url ? getFaviconUrl(app.url, 128) : null);
+  const initials = getInitials(app.name);
+  const bgColor = app.background || getColorFromString(app.name);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -42,49 +40,56 @@ export function AppCard({
     }
   };
 
-  const bgStyle = app.background
-    ? { background: `linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(0,0,0,0.2)), ${app.background}` }
-    : {};
-
   return (
     <div
       role="button"
       tabIndex={isFocused ? 0 : -1}
       aria-label={app.name}
       className={`${styles.card} ${isFocused ? styles.focused : ''}`}
-      style={bgStyle}
+      style={{ background: bgColor }}
       onClick={onClick}
       onMouseEnter={onFocus}
+      onFocus={onFocus}
       onContextMenu={onContextMenu}
       onKeyDown={handleKeyDown}
     >
-      {iconSrc && !imageError ? (
-        <img
-          src={iconSrc}
-          alt={app.name}
-          className={styles.icon}
-          onError={() => setImageError(true)}
-        />
-      ) : (
-        <div className={styles.iconWrapper}>
-          <FallbackIcon name={app.name} background={app.background} size={48} />
-        </div>
-      )}
-      <div className={styles.name}>{app.name}</div>
+      <div className={styles.iconWrapper}>
+        {faviconUrl && !imageError ? (
+          <img
+            src={faviconUrl}
+            alt={app.name}
+            className={styles.appLogo}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <span className={styles.initials}>{initials}</span>
+        )}
+      </div>
 
-      {isEditMode && (
-        <div className={styles.editButtons} onClick={(e) => e.stopPropagation()}>
-          {onEdit && (
-            <button className={styles.editBtn} onClick={onEdit} aria-label="Edit">
-              ✎
-            </button>
-          )}
-          {onDelete && (
-            <button className={styles.editBtn} onClick={onDelete} aria-label="Delete">
-              ×
-            </button>
-          )}
-        </div>
+      {showFavoriteToggle && onToggleFavorite && (
+        <button
+          className={`${styles.favoriteBadge} ${app.isFavorite ? styles.activeFav : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite();
+          }}
+          title={app.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+        >
+          {app.isFavorite ? '★' : '☆'}
+        </button>
+      )}
+
+      {isEditMode && onDelete && (
+        <button
+          className={styles.deleteBadge}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          title="Delete App"
+        >
+          ✕
+        </button>
       )}
     </div>
   );
