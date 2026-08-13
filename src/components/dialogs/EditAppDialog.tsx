@@ -10,12 +10,9 @@ interface EditAppDialogProps {
 }
 
 export function EditAppDialog({ app, onClose }: EditAppDialogProps) {
-  const { updateApp, categories, pages } = useAppContext();
+  const { updateApp } = useAppContext();
   const [name, setName] = useState(app.name);
   const [url, setUrl] = useState(app.url || '');
-  const [type, setType] = useState<'website' | 'page'>(app.type);
-  const [pageId, setPageId] = useState(app.pageId || '');
-  const [categoryId, setCategoryId] = useState(app.categoryId || '');
   const [icon, setIcon] = useState(app.icon || '');
   const [background, setBackground] = useState(app.background || '');
   const [error, setError] = useState('');
@@ -45,27 +42,20 @@ export function EditAppDialog({ app, onClose }: EditAppDialogProps) {
       return;
     }
 
-    if (type === 'website' && !url.trim()) {
-      setError('URL is required for websites');
+    if (!url.trim()) {
+      setError('URL is required');
       return;
     }
 
-    if (type === 'website' && url.trim() && !url.startsWith('http://') && !url.startsWith('https://')) {
-      setError('URL must start with http:// or https://');
-      return;
-    }
-    
-    if (type === 'page' && !pageId) {
-      setError('Please select a page');
-      return;
+    let finalUrl = url.trim();
+    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+      finalUrl = `https://${finalUrl}`;
     }
 
     updateApp(app.id, {
       name: name.trim(),
-      type,
-      url: type === 'website' ? url.trim() : undefined,
-      pageId: type === 'page' ? pageId : undefined,
-      categoryId: categoryId || undefined,
+      type: 'website',
+      url: finalUrl,
       icon: icon || undefined,
       background: background || undefined,
     });
@@ -75,55 +65,25 @@ export function EditAppDialog({ app, onClose }: EditAppDialogProps) {
   return (
     <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true" aria-label="Edit App">
       <div className={styles.dialog} onClick={e => e.stopPropagation()}>
-        <h2 className={styles.title}>Edit App</h2>
+        <h2 className={styles.title}>Edit Application</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.field}>
-            <label className={styles.label}>Name</label>
+            <label className={styles.label}>Application Name</label>
             <input ref={inputRef} className={styles.input} value={name} onChange={e => setName(e.target.value)} placeholder="App Name" />
           </div>
-          
-          <div className={styles.field}>
-            <label className={styles.label}>Type</label>
-            <select className={styles.select} value={type} onChange={e => setType(e.target.value as 'website' | 'page')}>
-              <option value="website">Website</option>
-              <option value="page">Custom Page</option>
-            </select>
-          </div>
-
-          {type === 'website' ? (
-            <div className={styles.field}>
-              <label className={styles.label}>URL</label>
-              <input className={styles.input} value={url} onChange={e => setUrl(e.target.value)} placeholder="https://example.com" />
-            </div>
-          ) : (
-            <div className={styles.field}>
-              <label className={styles.label}>Select Page</label>
-              <select className={styles.select} value={pageId} onChange={e => setPageId(e.target.value)}>
-                <option value="">-- Select a page --</option>
-                {pages.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
-            </div>
-          )}
 
           <div className={styles.field}>
-            <label className={styles.label}>Category</label>
-            <select className={styles.select} value={categoryId} onChange={e => setCategoryId(e.target.value)}>
-              <option value="">None (Uncategorized)</option>
-              {categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            <label className={styles.label}>Website URL</label>
+            <input className={styles.input} value={url} onChange={e => setUrl(e.target.value)} placeholder="https://example.com" />
           </div>
 
           <IconPicker value={icon} onChange={setIcon} appName={name} />
 
           <div className={styles.field}>
-            <label className={styles.label}>Background Color (Optional)</label>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <input type="color" value={background || '#1a1a2e'} onChange={e => setBackground(e.target.value)} style={{ width: 40, height: 40, padding: 0, border: 'none', background: 'transparent' }} />
-              <input className={styles.input} style={{ flex: 1 }} value={background} onChange={e => setBackground(e.target.value)} placeholder="#HEX or rgb()" />
+            <label className={styles.label}>Background Accent Color</label>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <input type="color" value={background || '#1a1a2e'} onChange={e => setBackground(e.target.value)} style={{ width: 44, height: 44, padding: 0, border: 'none', background: 'transparent', cursor: 'pointer' }} />
+              <input className={styles.input} style={{ flex: 1 }} value={background} onChange={e => setBackground(e.target.value)} placeholder="#HEX or linear-gradient()" />
             </div>
           </div>
 

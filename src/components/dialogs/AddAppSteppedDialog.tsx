@@ -5,31 +5,22 @@ import styles from './AddAppSteppedDialog.module.css';
 
 interface AddAppSteppedDialogProps {
   onClose: () => void;
-  defaultCategoryId?: string;
 }
 
-type TabType = 'general' | 'icon' | 'background' | 'category' | 'preview';
+type TabType = 'general' | 'icon' | 'background' | 'preview';
 
-export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
-  onClose,
-  defaultCategoryId,
-}) => {
-  const { addApp, categories, addCategory, pages } = useAppContext();
+export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({ onClose }) => {
+  const { addApp } = useAppContext();
 
   const [activeTab, setActiveTab] = useState<TabType>('general');
 
   // Form State
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
-  const [type, setType] = useState<'website' | 'page'>('website');
-  const [pageId, setPageId] = useState('');
-  const [categoryId, setCategoryId] = useState(defaultCategoryId || 'streaming');
   const [iconType, setIconType] = useState<'favicon' | 'upload' | 'library'>('favicon');
   const [iconUrl, setIconUrl] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('');
   const [error, setError] = useState('');
-  const [newCatName, setNewCatName] = useState('');
-  const [showNewCatInput, setShowNewCatInput] = useState(false);
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -50,25 +41,23 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
       setActiveTab('general');
       return;
     }
-    if (type === 'website' && (!url.trim() || !url.includes('.'))) {
+    if (!url.trim() || !url.includes('.')) {
       setError('A valid website URL is required');
       setActiveTab('general');
       return;
     }
 
     let finalUrl = url.trim();
-    if (type === 'website' && !finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
       finalUrl = `https://${finalUrl}`;
     }
 
     addApp({
       name: name.trim(),
-      type,
-      url: type === 'website' ? finalUrl : undefined,
-      pageId: type === 'page' ? pageId : undefined,
+      type: 'website',
+      url: finalUrl,
       icon: iconUrl.trim() || undefined,
       background: backgroundColor || undefined,
-      categoryId: categoryId || undefined,
     });
 
     onClose();
@@ -77,24 +66,14 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
   const handleNext = () => {
     if (activeTab === 'general') setActiveTab('icon');
     else if (activeTab === 'icon') setActiveTab('background');
-    else if (activeTab === 'background') setActiveTab('category');
-    else if (activeTab === 'category') setActiveTab('preview');
+    else if (activeTab === 'background') setActiveTab('preview');
     else handleSave();
   };
 
   const handleBack = () => {
-    if (activeTab === 'preview') setActiveTab('category');
-    else if (activeTab === 'category') setActiveTab('background');
+    if (activeTab === 'preview') setActiveTab('background');
     else if (activeTab === 'background') setActiveTab('icon');
     else if (activeTab === 'icon') setActiveTab('general');
-  };
-
-  const handleAddCategory = () => {
-    if (newCatName.trim()) {
-      addCategory({ name: newCatName.trim() });
-      setNewCatName('');
-      setShowNewCatInput(false);
-    }
   };
 
   const computedFavicon = url.trim() ? getFaviconUrl(url.trim(), 128) : '';
@@ -108,7 +87,7 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
             className={`${styles.sidebarTab} ${activeTab === 'general' ? styles.activeSidebarTab : ''}`}
             onClick={() => setActiveTab('general')}
           >
-            <span className={styles.tabIcon}>⚙️</span> General
+            <span className={styles.tabIcon}>⚙️</span> Details
           </button>
           <button
             className={`${styles.sidebarTab} ${activeTab === 'icon' ? styles.activeSidebarTab : ''}`}
@@ -120,13 +99,7 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
             className={`${styles.sidebarTab} ${activeTab === 'background' ? styles.activeSidebarTab : ''}`}
             onClick={() => setActiveTab('background')}
           >
-            <span className={styles.tabIcon}>🎨</span> Background
-          </button>
-          <button
-            className={`${styles.sidebarTab} ${activeTab === 'category' ? styles.activeSidebarTab : ''}`}
-            onClick={() => setActiveTab('category')}
-          >
-            <span className={styles.tabIcon}>🔲</span> Category
+            <span className={styles.tabIcon}>🎨</span> Color
           </button>
           <button
             className={`${styles.sidebarTab} ${activeTab === 'preview' ? styles.activeSidebarTab : ''}`}
@@ -142,87 +115,33 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
 
           {error && <div className={styles.errorMessage}>{error}</div>}
 
-          {/* TAB 1: GENERAL */}
+          {/* STEP 1: DETAILS */}
           {activeTab === 'general' && (
             <div className={styles.stepContent}>
               <div className={styles.field}>
-                <label className={styles.label}>Name</label>
+                <label className={styles.label}>Application Name</label>
                 <input
                   ref={nameInputRef}
                   className={styles.input}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Spotify"
+                  placeholder="e.g. Spotify, YouTube, Netflix"
                 />
               </div>
 
               <div className={styles.field}>
-                <label className={styles.label}>URL</label>
+                <label className={styles.label}>Website URL</label>
                 <input
                   className={styles.input}
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://open.spotify.com"
-                  disabled={type === 'page'}
                 />
               </div>
-
-              <div className={styles.field}>
-                <label className={styles.label}>Type</label>
-                <div className={styles.pillToggle}>
-                  <button
-                    className={`${styles.pillOption} ${type === 'website' ? styles.activePill : ''}`}
-                    type="button"
-                    onClick={() => setType('website')}
-                  >
-                    Website
-                  </button>
-                  <button
-                    className={`${styles.pillOption} ${type === 'page' ? styles.activePill : ''}`}
-                    type="button"
-                    onClick={() => setType('page')}
-                  >
-                    Page
-                  </button>
-                </div>
-              </div>
-
-              {type === 'page' ? (
-                <div className={styles.field}>
-                  <label className={styles.label}>Target Custom Page</label>
-                  <select
-                    className={styles.select}
-                    value={pageId}
-                    onChange={(e) => setPageId(e.target.value)}
-                  >
-                    <option value="">Select a page...</option>
-                    {pages.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ) : (
-                <div className={styles.field}>
-                  <label className={styles.label}>Category</label>
-                  <select
-                    className={styles.select}
-                    value={categoryId}
-                    onChange={(e) => setCategoryId(e.target.value)}
-                  >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
             </div>
           )}
 
-          {/* TAB 2: ICON (Screen 4) */}
+          {/* STEP 2: ICON */}
           {activeTab === 'icon' && (
             <div className={styles.stepContent}>
               <div className={styles.segmentedHeader}>
@@ -230,19 +149,19 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
                   className={`${styles.segmentBtn} ${iconType === 'favicon' ? styles.activeSegment : ''}`}
                   onClick={() => setIconType('favicon')}
                 >
-                  Website Favicon
+                  Favicon
                 </button>
                 <button
                   className={`${styles.segmentBtn} ${iconType === 'upload' ? styles.activeSegment : ''}`}
                   onClick={() => setIconType('upload')}
                 >
-                  Upload Image
+                  Custom URL
                 </button>
                 <button
                   className={`${styles.segmentBtn} ${iconType === 'library' ? styles.activeSegment : ''}`}
                   onClick={() => setIconType('library')}
                 >
-                  Icon Library
+                  Icon Emoji
                 </button>
               </div>
 
@@ -276,7 +195,7 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
 
               {iconType === 'library' && (
                 <div className={styles.iconLibraryGrid}>
-                  {['🎵', '🎬', '🎮', '💼', '📧', '🚀', '📰', '🛒', '💬', '📺'].map((emoji) => (
+                  {['🎵', '🎬', '🎮', '💼', '📧', '🚀', '📰', '🛒', '💬', '📺', '🔥', '⭐️'].map((emoji) => (
                     <button
                       key={emoji}
                       className={styles.libraryEmojiBtn}
@@ -290,17 +209,17 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
             </div>
           )}
 
-          {/* TAB 3: BACKGROUND */}
+          {/* STEP 3: COLOR */}
           {activeTab === 'background' && (
             <div className={styles.stepContent}>
               <div className={styles.field}>
-                <label className={styles.label}>Background Color / Accent</label>
+                <label className={styles.label}>Tile Background Color</label>
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                   <input
                     type="color"
                     value={backgroundColor || '#1db954'}
                     onChange={(e) => setBackgroundColor(e.target.value)}
-                    style={{ width: 44, height: 44, border: 'none', background: 'transparent', cursor: 'pointer' }}
+                    style={{ width: 46, height: 46, border: 'none', background: 'transparent', cursor: 'pointer' }}
                   />
                   <input
                     className={styles.input}
@@ -326,49 +245,7 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
             </div>
           )}
 
-          {/* TAB 4: CATEGORY (Screen 5) */}
-          {activeTab === 'category' && (
-            <div className={styles.stepContent}>
-              <div className={styles.categoryHeaderRow}>
-                <span className={styles.subLabel}>Select Category</span>
-                <button
-                  className={styles.newCategoryBtn}
-                  onClick={() => setShowNewCatInput(!showNewCatInput)}
-                >
-                  + New Category
-                </button>
-              </div>
-
-              {showNewCatInput && (
-                <div className={styles.newCatInputRow}>
-                  <input
-                    className={styles.input}
-                    value={newCatName}
-                    onChange={(e) => setNewCatName(e.target.value)}
-                    placeholder="Category Name..."
-                  />
-                  <button className={styles.saveCatBtn} onClick={handleAddCategory}>
-                    Add
-                  </button>
-                </div>
-              )}
-
-              <div className={styles.categoryTileGrid}>
-                {categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    className={`${styles.categoryTile} ${categoryId === cat.id ? styles.activeCategoryTile : ''}`}
-                    onClick={() => setCategoryId(cat.id)}
-                  >
-                    <span className={styles.catTileIcon}>🔲</span>
-                    <span>{cat.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 5: PREVIEW */}
+          {/* STEP 4: PREVIEW */}
           {activeTab === 'preview' && (
             <div className={styles.stepContent} style={{ alignItems: 'center', justifyContent: 'center' }}>
               <div className={styles.previewCard} style={{ background: backgroundColor || '#1DB954' }}>
@@ -404,7 +281,7 @@ export const AddAppSteppedDialog: React.FC<AddAppSteppedDialogProps> = ({
 
             {activeTab !== 'preview' ? (
               <button type="button" className={styles.btnNext} onClick={handleNext}>
-                Next
+                Next Step
               </button>
             ) : (
               <button type="button" className={styles.btnNext} onClick={handleSave}>

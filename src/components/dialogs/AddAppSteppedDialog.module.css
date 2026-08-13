@@ -1,53 +1,56 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 6, 10, 0.85);
-  backdrop-filter: blur(14px);
+  background: rgba(8, 10, 16, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  animation: fadeIn 150ms ease;
+  animation: fadeIn 180ms ease;
 }
 
 .dialog {
   display: flex;
-  width: 720px;
+  width: 740px;
   max-width: 92vw;
-  height: 520px;
-  background: #121420;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
+  height: 540px;
+  background: rgba(16, 18, 26, 0.88);
+  backdrop-filter: blur(36px);
+  -webkit-backdrop-filter: blur(36px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8);
   animation: scaleIn 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar {
-  width: 190px;
-  background: rgba(0, 0, 0, 0.3);
+  width: 200px;
+  background: rgba(0, 0, 0, 0.35);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 24px 12px;
+  padding: 28px 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sidebarTab {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border-radius: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.92rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   text-align: left;
-  transition: all 150ms ease;
+  transition: all 180ms ease;
 }
 
 .sidebarTab:hover {
@@ -56,29 +59,30 @@
 }
 
 .activeSidebarTab {
-  background: #6366f1 !important;
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
   color: #ffffff !important;
-  font-weight: 600;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
 }
 
 .tabIcon {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
 }
 
 .mainPanel {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 28px 32px 24px 32px;
+  padding: 32px 36px 28px 36px;
   overflow-y: auto;
 }
 
 .title {
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.6rem;
+  font-weight: 800;
   color: #ffffff;
-  margin-bottom: 24px;
+  margin: 0 0 24px 0;
+  letter-spacing: -0.01em;
 }
 
 .stepContent {
@@ -89,13 +93,14 @@
 }
 
 .errorMessage {
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 10px;
+  border-radius: 12px;
   color: #f87171;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .field {
@@ -105,272 +110,262 @@
 }
 
 .label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .input {
   width: 100%;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  height: 46px;
+  padding: 0 18px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
   color: #ffffff;
   font-size: 0.95rem;
   font-family: inherit;
   outline: none;
-  transition: border-color 150ms ease;
+  transition: all 180ms ease;
+  box-sizing: border-box;
 }
 
 .input:focus {
   border-color: #6366f1;
-}
-
-.select {
-  width: 100%;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-family: inherit;
-  outline: none;
-  cursor: pointer;
-}
-
-.select option {
-  background: #121420;
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
 }
 
 .pillToggle {
   display: flex;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  padding: 4px;
-  gap: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 5px;
+  gap: 6px;
   width: fit-content;
 }
 
 .pillOption {
-  padding: 8px 24px;
-  border-radius: 8px;
+  padding: 10px 24px;
+  border-radius: 12px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.92rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all 180ms ease;
 }
 
 .activePill {
-  background: #6366f1;
-  color: #ffffff;
-  font-weight: 600;
+  background: #ffffff;
+  color: #0b0d14 !important;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
 }
 
 /* Icon Selection Tab */
 .segmentedHeader {
   display: flex;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 4px;
-  border-radius: 10px;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 5px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 16px;
 }
 
 .segmentBtn {
   flex: 1;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
+  transition: all 180ms ease;
 }
 
 .activeSegment {
-  background: #6366f1;
-  color: #ffffff;
-  font-weight: 600;
+  background: #ffffff;
+  color: #0b0d14 !important;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
 }
 
 .iconPreviewCard {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
+  gap: 18px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
 }
 
 .faviconIconCircle {
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: #1db954;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .previewFaviconImg {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 
 .initials {
   color: #ffffff;
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 800;
 }
 
 .domainText {
   flex: 1;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.98rem;
+  font-weight: 600;
 }
 
 .refreshBtn {
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.refreshBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .presetColors {
   display: flex;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 14px;
+  margin-top: 14px;
 }
 
 .colorDot {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   cursor: pointer;
-  transition: transform 150ms ease;
+  transition: transform 180ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .colorDot:hover {
-  transform: scale(1.15);
+  transform: scale(1.18);
+  border-color: #ffffff;
 }
 
-/* Category Grid (Screen 5) */
+.iconLibraryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.libraryEmojiBtn {
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 180ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.libraryEmojiBtn:hover {
+  background: rgba(99, 102, 241, 0.3);
+  border-color: #6366f1;
+  transform: scale(1.1);
+}
+
+/* Category Grid */
 .categoryHeaderRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.subLabel {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
 .newCategoryBtn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.8);
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-.newCatInputRow {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.saveCatBtn {
-  padding: 0 16px;
-  background: #6366f1;
-  border: none;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: #ffffff;
-  cursor: pointer;
-}
-
-.categoryTileGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  max-height: 240px;
-  overflow-y: auto;
-}
-
-.categoryTile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
   border-radius: 12px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 150ms ease;
 }
 
-.categoryTile:hover {
-  background: rgba(255, 255, 255, 0.08);
+.newCategoryBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.newCatInputRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.saveCatBtn {
+  padding: 0 20px;
+  background: #6366f1;
+  border: none;
+  border-radius: 12px;
   color: #ffffff;
-}
-
-.activeCategoryTile {
-  border-color: #6366f1 !important;
-  background: rgba(99, 102, 241, 0.15) !important;
-  color: #ffffff !important;
-  font-weight: 600;
-}
-
-.catTileIcon {
-  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 150ms ease;
 }
 
 /* Preview Tab */
 .previewCard {
-  width: 100px;
-  height: 100px;
-  border-radius: 20px;
+  width: 110px;
+  height: 110px;
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-  margin: 20px auto 12px auto;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  margin: 20px auto 16px auto;
 }
 
 .previewIconCircle {
-  width: 54px;
-  height: 54px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .previewName {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   color: #ffffff;
   text-align: center;
 }
@@ -381,35 +376,45 @@
   align-items: center;
   gap: 12px;
   margin-top: 24px;
-  padding-top: 16px;
+  padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btnBack, .btnCancel {
-  padding: 10px 20px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 12px 22px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.btnBack:hover, .btnCancel:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
 }
 
 .btnNext {
-  padding: 10px 24px;
-  background: #6366f1;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
   border: none;
-  border-radius: 10px;
+  border-radius: 14px;
   color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  transition: all 180ms ease;
 }
 
 .btnNext:hover {
-  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(99, 102, 241, 0.55);
 }
 
 @keyframes fadeIn {
