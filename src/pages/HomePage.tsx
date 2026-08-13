@@ -98,24 +98,26 @@ export default function HomePage() {
         <EmptyState onAddApp={() => setShowAddApp(true)} />
       ) : (
         <div className={styles.mainContent}>
-          {/* Favorites Floating Glass Dock Container */}
-          <div className={styles.dockWrapper}>
-            <div className={styles.floatingDock}>
-              {favoriteApps.map((app) => (
-                <AppCard
-                  key={app.id}
-                  app={app}
-                  isFocused={focusedId === app.id}
-                  onFocus={() => setFocusedId(app.id)}
-                  onClick={() => (isEditMode ? setEditingApp(app) : handleSelect(app.id))}
-                  onContextMenu={(e) => handleAppContextMenu(e, app)}
-                  isEditMode={isEditMode}
-                  onEdit={() => setEditingApp(app)}
-                  onDelete={() => setDeleteTarget({ type: 'app', id: app.id, name: app.name })}
-                />
-              ))}
+          {/* Favorites Floating Glass Dock Container (Renders ONLY when favorites exist) */}
+          {favoriteApps.length > 0 && (
+            <div className={styles.dockWrapper}>
+              <div className={styles.floatingDock}>
+                {favoriteApps.map((app) => (
+                  <AppCard
+                    key={app.id}
+                    app={app}
+                    isFocused={focusedId === app.id}
+                    onFocus={() => setFocusedId(app.id)}
+                    onClick={() => (isEditMode ? setEditingApp(app) : handleSelect(app.id))}
+                    onContextMenu={(e) => handleAppContextMenu(e, app)}
+                    isEditMode={isEditMode}
+                    onEdit={() => setEditingApp(app)}
+                    onDelete={() => setDeleteTarget({ type: 'app', id: app.id, name: app.name })}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Centered Down Chevron (Opens All Apps Drawer Modal) */}
           <div className={styles.bottomChevronRow}>
