@@ -12,8 +12,6 @@ interface AppCardProps {
   isEditMode?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
-  showFavoriteToggle?: boolean;
-  onToggleFavorite?: () => void;
 }
 
 export function AppCard({
@@ -24,8 +22,6 @@ export function AppCard({
   onContextMenu,
   isEditMode,
   onDelete,
-  showFavoriteToggle,
-  onToggleFavorite,
 }: AppCardProps) {
   const [imageError, setImageError] = useState(false);
 
@@ -65,19 +61,6 @@ export function AppCard({
           <span className={styles.initials}>{initials}</span>
         )}
       </div>
-
-      {showFavoriteToggle && onToggleFavorite && (
-        <button
-          className={`${styles.favoriteBadge} ${app.isFavorite ? styles.activeFav : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleFavorite();
-          }}
-          title={app.isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-        >
-          {app.isFavorite ? '★' : '☆'}
-        </button>
-      )}
 
       {isEditMode && onDelete && (
         <button

@@ -4,6 +4,8 @@ import styles from './ContextMenu.module.css';
 interface ContextMenuProps {
   x: number;
   y: number;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
   onEdit: () => void;
   onMoveToPage?: () => void;
   onChangeCategory?: () => void;
@@ -15,6 +17,8 @@ interface ContextMenuProps {
 export const ContextMenu: React.FC<ContextMenuProps> = ({
   x,
   y,
+  isFavorite,
+  onToggleFavorite,
   onEdit,
   onMoveToPage,
   onChangeCategory,
@@ -43,8 +47,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   }, [onClose]);
 
   // Adjust positioning to stay on screen
-  const adjustedX = Math.min(x, window.innerWidth - 220);
-  const adjustedY = Math.min(y, window.innerHeight - 240);
+  const adjustedX = Math.min(x, window.innerWidth - 240);
+  const adjustedY = Math.min(y, window.innerHeight - 280);
 
   return (
     <div
@@ -52,25 +56,45 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       className={styles.contextMenu}
       style={{ left: `${adjustedX}px`, top: `${adjustedY}px` }}
     >
+      {onToggleFavorite && (
+        <button
+          className={styles.menuItem}
+          onClick={() => {
+            onToggleFavorite();
+            onClose();
+          }}
+        >
+          <span className={styles.icon} style={{ color: isFavorite ? '#ffd700' : 'inherit' }}>
+            {isFavorite ? '★' : '☆'}
+          </span>{' '}
+          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+        </button>
+      )}
+
       <button className={styles.menuItem} onClick={() => { onEdit(); onClose(); }}>
         <span className={styles.icon}>✏️</span> Edit App
       </button>
+
       {onMoveToPage && (
         <button className={styles.menuItem} onClick={() => { onMoveToPage(); onClose(); }}>
           <span className={styles.icon}>📂</span> Move to Page
         </button>
       )}
+
       {onChangeCategory && (
         <button className={styles.menuItem} onClick={() => { onChangeCategory(); onClose(); }}>
           <span className={styles.icon}>🔲</span> Change Category
         </button>
       )}
+
       {onDuplicate && (
         <button className={styles.menuItem} onClick={() => { onDuplicate(); onClose(); }}>
           <span className={styles.icon}>📋</span> Duplicate
         </button>
       )}
+
       <div className={styles.divider} />
+
       <button className={`${styles.menuItem} ${styles.deleteItem}`} onClick={() => { onDelete(); onClose(); }}>
         <span className={styles.icon}>🗑️</span> Delete
       </button>

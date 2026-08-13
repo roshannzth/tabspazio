@@ -144,11 +144,13 @@ export default function HomePage() {
         />
       )}
 
-      {/* Context Menu */}
-      {contextMenu && (
+      {/* Context Menu on Homescreen */}
+      {contextMenu && contextMenu.app && (
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
+          isFavorite={contextMenu.app.isFavorite !== false}
+          onToggleFavorite={() => toggleFavorite(contextMenu.app!.id)}
           onClose={() => setContextMenu(null)}
           onEdit={() => {
             if (contextMenu.app) setEditingApp(contextMenu.app);

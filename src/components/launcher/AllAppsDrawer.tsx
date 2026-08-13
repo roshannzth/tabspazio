@@ -77,8 +77,6 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
                 onFocus={() => setFocusedId(app.id)}
                 onClick={() => onSelectApp(app.id)}
                 onContextMenu={(e) => handleContextMenu(e, app)}
-                showFavoriteToggle={true}
-                onToggleFavorite={() => onToggleFavorite(app.id)}
                 isEditMode={isEditMode}
                 onEdit={() => onEditApp(app)}
                 onDelete={() => onDeleteApp(app)}
@@ -99,6 +97,8 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
+          isFavorite={contextMenu.app.isFavorite !== false}
+          onToggleFavorite={() => onToggleFavorite(contextMenu.app.id)}
           onClose={() => setContextMenu(null)}
           onEdit={() => onEditApp(contextMenu.app)}
           onDuplicate={() => onDuplicateApp(contextMenu.app)}
