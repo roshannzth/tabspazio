@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { App } from '../../models/App';
+import { useSettings } from '../../hooks/useSettings';
 import { getFaviconUrl, getInitials, getColorFromString } from '../../services/favicon';
 import styles from './AppCard.module.css';
 
@@ -24,10 +25,25 @@ export function AppCard({
   onDelete,
 }: AppCardProps) {
   const [imageError, setImageError] = useState(false);
+  const { settings } = useSettings();
+  const { appearance } = settings;
 
   const faviconUrl = app.icon || (app.url ? getFaviconUrl(app.url, 128) : null);
   const initials = getInitials(app.name);
   const bgColor = app.background || getColorFromString(app.name);
+
+  const accentColor = appearance.accentColor || '#ffffff';
+  const borderRadius = appearance.borderRadius ? `${appearance.borderRadius}px` : undefined;
+
+  const cardStyle: React.CSSProperties = {
+    background: bgColor,
+    ...(borderRadius ? { borderRadius } : {}),
+  };
+
+  if (isFocused) {
+    cardStyle.borderColor = accentColor;
+    cardStyle.boxShadow = `0 0 0 3.5px ${accentColor}, 0 16px 40px rgba(0, 0, 0, 0.85)`;
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -42,7 +58,7 @@ export function AppCard({
       tabIndex={isFocused ? 0 : -1}
       aria-label={app.name}
       className={`${styles.card} ${isFocused ? styles.focused : ''}`}
-      style={{ background: bgColor }}
+      style={cardStyle}
       onClick={onClick}
       onMouseEnter={onFocus}
       onFocus={onFocus}

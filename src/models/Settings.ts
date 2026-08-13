@@ -14,6 +14,8 @@ export interface AppearanceSettings {
   cardSize: 'small' | 'medium' | 'large';
   borderRadius: number;
   theme: 'dark' | 'midnight' | 'amoled' | 'darker';
+  accentColor?: string;
+  vignetteStrength?: 'light' | 'medium' | 'heavy';
 }
 
 export interface LauncherSettings {
@@ -39,6 +41,8 @@ export const DEFAULT_SETTINGS: Settings = {
     cardSize: 'medium',
     borderRadius: 22,
     theme: 'dark',
+    accentColor: '#6366f1',
+    vignetteStrength: 'medium',
   },
   launcher: { columns: 6, animations: true, showCategoryLabels: true },
 };
