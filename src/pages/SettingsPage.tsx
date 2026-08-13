@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SettingsPanel from '../components/settings/SettingsPanel';
+import styles from '../components/settings/Settings.module.css';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -16,18 +17,19 @@ export default function SettingsPage() {
   }, [navigate]);
 
   return (
-    <div style={{ padding: '40px', maxWidth: '1000px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <button 
-          onClick={() => navigate('/')} 
-          style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', padding: '10px 15px', borderRadius: '8px', cursor: 'pointer', marginRight: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}
-        >
-          <span>←</span> Back
-        </button>
-        <h1 style={{ color: '#fff', margin: 0, fontSize: '2rem', fontWeight: 600 }}>Settings</h1>
-      </div>
-      
-      <SettingsPanel />
+    <div className={styles.settingsPageContainer}>
+      <header className={styles.header}>
+        <div className={styles.headerLeft}>
+          <button className={styles.backBtn} onClick={() => navigate('/')} title="Return to Homescreen">
+            <span className={styles.backIcon}>←</span> Back
+          </button>
+          <h1 className={styles.pageTitle}>Settings</h1>
+        </div>
+      </header>
+
+      <main className={styles.panelWrapper}>
+        <SettingsPanel />
+      </main>
     </div>
   );
 }
