@@ -86,10 +86,17 @@ export default function HomePage() {
     });
   };
 
+  const handleWheel = (e: React.WheelEvent) => {
+    // Scrolling down on homescreen opens All Applications drawer
+    if (e.deltaY > 20 && !showAllApps && !showAddApp && !showAddPage && !showAddCategory && !editingApp && !contextMenu && !deleteTarget) {
+      setShowAllApps(true);
+    }
+  };
+
   const hasNoApps = apps.length === 0;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onWheel={handleWheel}>
       <Header onOpenSettings={() => navigate('/settings')} />
 
       {!isEditMode && <HeroHeader />}

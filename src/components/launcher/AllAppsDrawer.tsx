@@ -42,6 +42,13 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
     setContextMenu({ x: e.clientX, y: e.clientY, app });
   };
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    // If scrolling up when at top of list, return to homescreen
+    if (e.deltaY < -25 && e.currentTarget.scrollTop <= 0) {
+      onClose();
+    }
+  };
+
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true">
       <div className={styles.drawerHeader}>
@@ -62,12 +69,12 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
           />
         </div>
 
-        <button className={styles.closeBtn} onClick={onClose} title="Close All Apps">
+        <button className={styles.closeBtn} onClick={onClose} title="Return to Homescreen">
           ✕
         </button>
       </div>
 
-      <div className={styles.gridContainer}>
+      <div className={styles.gridContainer} onWheel={handleWheel}>
         <div className={styles.appsGrid}>
           {filteredApps.map((app) => (
             <div key={app.id} className={styles.appCardContainer}>
