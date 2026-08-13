@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppContext } from '../../context/AppContext';
+import { CustomSelect } from '../common/CustomSelect';
 import styles from './Settings.module.css';
 import { LauncherSettings as LauncherSettingsType } from '../../models/Settings';
 
@@ -11,7 +12,15 @@ export default function LauncherSettings() {
     updateSettings({ launcher: { ...launcher, ...updates } });
   };
 
-  const Toggle = ({ active, onClick }: { active: boolean, onClick: () => void }) => (
+  const columnOptions = [
+    { label: '4 Columns', value: 4 },
+    { label: '5 Columns', value: 5 },
+    { label: '6 Columns', value: 6 },
+    { label: '7 Columns', value: 7 },
+    { label: '8 Columns', value: 8 },
+  ];
+
+  const Toggle = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
     <button className={`${styles.toggle} ${active ? styles.active : ''}`} onClick={onClick}>
       <div className={styles.toggleKnob} />
     </button>
@@ -26,17 +35,11 @@ export default function LauncherSettings() {
           <div className={styles.rowLabel}>Columns</div>
           <div className={styles.rowDesc}>Number of apps per row</div>
         </div>
-        <select
-          className={styles.settingsSelect}
+        <CustomSelect
+          options={columnOptions}
           value={launcher.columns}
-          onChange={(e) => update({ columns: parseInt(e.target.value) })}
-        >
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-        </select>
+          onChange={(val) => update({ columns: Number(val) })}
+        />
       </div>
 
       <div className={styles.row}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAppContext } from '../../context/AppContext';
+import { CustomSelect } from '../common/CustomSelect';
 import styles from './Settings.module.css';
 import { ClockSettings as ClockSettingsType } from '../../models/Settings';
 
@@ -11,7 +12,12 @@ export default function ClockSettings() {
     updateSettings({ clock: { ...clock, ...updates } });
   };
 
-  const Toggle = ({ active, onClick }: { active: boolean, onClick: () => void }) => (
+  const formatOptions = [
+    { label: '12-hour', value: '12h' },
+    { label: '24-hour', value: '24h' },
+  ];
+
+  const Toggle = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
     <button className={`${styles.toggle} ${active ? styles.active : ''}`} onClick={onClick}>
       <div className={styles.toggleKnob} />
     </button>
@@ -25,14 +31,11 @@ export default function ClockSettings() {
         <div>
           <div className={styles.rowLabel}>Time Format</div>
         </div>
-        <select
-          className={styles.settingsSelect}
+        <CustomSelect
+          options={formatOptions}
           value={clock.format}
-          onChange={(e) => update({ format: e.target.value as any })}
-        >
-          <option value="12h">12-hour</option>
-          <option value="24h">24-hour</option>
-        </select>
+          onChange={(val) => update({ format: val as any })}
+        />
       </div>
 
       <div className={styles.row}>
