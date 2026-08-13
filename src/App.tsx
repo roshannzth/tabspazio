@@ -16,6 +16,15 @@ function AppContent() {
       document.body.classList.add('no-animations');
     }
   }, [settings.launcher.animations]);
+
+  useEffect(() => {
+    // Disable native browser right-click context menu globally across launcher UI
+    const handleGlobalContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener('contextmenu', handleGlobalContextMenu);
+    return () => window.removeEventListener('contextmenu', handleGlobalContextMenu);
+  }, []);
   
   if (loading) {
     return <div className={styles.loading}>Loading...</div>;
