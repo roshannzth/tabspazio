@@ -17,8 +17,8 @@ export default function SettingsPage() {
   }, [navigate]);
 
   return (
-    <div className={styles.settingsPageContainer}>
-      <header className={styles.header}>
+    <div className={styles.settingsPageContainer} onClick={() => navigate('/')}>
+      <header className={styles.header} onClick={(e) => e.stopPropagation()}>
         <div className={styles.headerLeft}>
           <button className={styles.backBtn} onClick={() => navigate('/')} title="Return to Homescreen">
             <span className={styles.backIcon}>←</span> Back
@@ -27,7 +27,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className={styles.panelWrapper}>
+      <main className={styles.panelWrapper} onClick={(e) => e.stopPropagation()}>
         <SettingsPanel />
       </main>
     </div>
