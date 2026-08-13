@@ -162,12 +162,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const updateSettings = async (updates: Partial<Settings>) => {
-    const newSettings = {
+    const newSettings: Settings = {
       ...settings,
       ...updates,
       clock: { ...settings.clock, ...(updates.clock || {}) },
       appearance: { ...settings.appearance, ...(updates.appearance || {}) },
-      launcher: { ...settings.launcher, ...(updates.launcher || {}) },
     };
     setSettings(newSettings);
     await saveState({ settings: newSettings });

@@ -19,14 +19,9 @@ export interface AppearanceSettings {
   accentColor?: string;
 }
 
-export interface LauncherSettings {
-  animations: boolean;
-}
-
 export interface Settings {
   clock: ClockSettings;
   appearance: AppearanceSettings;
-  launcher: LauncherSettings;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -49,5 +44,4 @@ export const DEFAULT_SETTINGS: Settings = {
     theme: 'dark',
     accentColor: '#6366f1',
   },
-  launcher: { animations: true },
 };

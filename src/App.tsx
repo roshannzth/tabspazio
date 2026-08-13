@@ -8,14 +8,6 @@ import styles from './App.module.css';
 
 function AppContent() {
   const { settings, loading } = useAppContext();
-  
-  useEffect(() => {
-    if (settings.launcher.animations) {
-      document.body.classList.remove('no-animations');
-    } else {
-      document.body.classList.add('no-animations');
-    }
-  }, [settings.launcher.animations]);
 
   useEffect(() => {
     // Disable native browser right-click context menu globally across launcher UI
