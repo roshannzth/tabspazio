@@ -13,9 +13,9 @@
 .drawerHeader {
   height: 90px;
   padding: 0 60px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -23,6 +23,7 @@
   display: flex;
   align-items: baseline;
   gap: 14px;
+  justify-self: start;
 }
 
 .title {
@@ -41,7 +42,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 320px;
+  width: 360px;
+  justify-self: center;
 }
 
 .searchIcon {
@@ -68,9 +70,11 @@
 .searchInput:focus {
   border-color: #6366f1;
   background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
 }
 
 .closeBtn {
+  justify-self: end;
   width: 44px;
   height: 44px;
   border-radius: 50%;
