@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useClock } from '../../hooks/useClock';
+import { WeatherWidget } from '../launcher/WeatherWidget';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -40,6 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className={styles.rightSection}>
+        <WeatherWidget />
         <button
           className={styles.settingsIconBtn}
           onClick={onOpenSettings || (() => navigate('/settings'))}

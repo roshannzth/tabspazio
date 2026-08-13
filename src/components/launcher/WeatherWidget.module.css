@@ -1,0 +1,40 @@
+.weatherContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #ffffff;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: all 180ms ease;
+  user-select: none;
+}
+
+.weatherContainer:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: scale(1.03);
+}
+
+.weatherIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.tempText {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.cityText {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}

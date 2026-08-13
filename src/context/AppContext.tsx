@@ -167,6 +167,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       ...updates,
       clock: { ...settings.clock, ...(updates.clock || {}) },
       appearance: { ...settings.appearance, ...(updates.appearance || {}) },
+      weather: { ...(settings.weather || DEFAULT_SETTINGS.weather), ...(updates.weather || {}) },
     };
     setSettings(newSettings);
     await saveState({ settings: newSettings });

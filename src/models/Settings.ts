@@ -19,9 +19,19 @@ export interface AppearanceSettings {
   accentColor?: string;
 }
 
+export interface WeatherSettings {
+  enabled: boolean;
+  unit: 'celsius' | 'fahrenheit';
+  city: string;
+  latitude?: number;
+  longitude?: number;
+  refreshInterval?: number;
+}
+
 export interface Settings {
   clock: ClockSettings;
   appearance: AppearanceSettings;
+  weather: WeatherSettings;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -43,5 +53,13 @@ export const DEFAULT_SETTINGS: Settings = {
     borderRadius: 22,
     theme: 'dark',
     accentColor: '#6366f1',
+  },
+  weather: {
+    enabled: true,
+    unit: 'celsius',
+    city: 'New York',
+    latitude: 40.7128,
+    longitude: -74.006,
+    refreshInterval: 15,
   },
 };

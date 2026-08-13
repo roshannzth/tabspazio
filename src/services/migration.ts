@@ -10,12 +10,28 @@ export function migrateData(data: any): StorageSchema {
   if (version < CURRENT_SCHEMA_VERSION) {
     return {
       version: CURRENT_SCHEMA_VERSION,
-      apps: DEFAULT_APPS,
-      categories: DEFAULT_CATEGORIES,
-      pages: DEFAULT_PAGES,
-      settings: DEFAULT_SETTINGS,
+      apps: data?.apps || DEFAULT_APPS,
+      categories: data?.categories || DEFAULT_CATEGORIES,
+      pages: data?.pages || DEFAULT_PAGES,
+      settings: {
+        ...DEFAULT_SETTINGS,
+        ...(data?.settings || {}),
+        clock: { ...DEFAULT_SETTINGS.clock, ...(data?.settings?.clock || {}) },
+        appearance: { ...DEFAULT_SETTINGS.appearance, ...(data?.settings?.appearance || {}) },
+        weather: { ...DEFAULT_SETTINGS.weather, ...(data?.settings?.weather || {}) },
+      },
     };
   }
   
-  return data as StorageSchema;
+  return {
+    ...data,
+    version: CURRENT_SCHEMA_VERSION,
+    settings: {
+      ...DEFAULT_SETTINGS,
+      ...(data?.settings || {}),
+      clock: { ...DEFAULT_SETTINGS.clock, ...(data?.settings?.clock || {}) },
+      appearance: { ...DEFAULT_SETTINGS.appearance, ...(data?.settings?.appearance || {}) },
+      weather: { ...DEFAULT_SETTINGS.weather, ...(data?.settings?.weather || {}) },
+    },
+  } as StorageSchema;
 }

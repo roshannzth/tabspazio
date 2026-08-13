@@ -67,7 +67,7 @@ export default function DataSettings() {
         {/* Export Card */}
         <div className={styles.cardBox}>
           <div className={styles.cardHeader}>Export Configuration</div>
-          <p className={styles.cardDesc}>Save your apps, pages and settings to a JSON file.</p>
+          <p className={styles.cardDesc}>Save your apps, pages, weather location, and launcher settings to a JSON file.</p>
           <button className={styles.btnAction} onClick={handleExport}>
             <span>📥</span> Export to File
           </button>
