@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { App } from '../../models/App';
 import { AppCard } from './AppCard';
+import { ContextMenu } from './ContextMenu';
 import styles from './AllAppsDrawer.module.css';
 
 interface AllAppsDrawerProps {
@@ -11,6 +12,7 @@ interface AllAppsDrawerProps {
   onAddApp: () => void;
   onEditApp: (app: App) => void;
   onDeleteApp: (app: App) => void;
+  onDuplicateApp: (app: App) => void;
   isEditMode?: boolean;
 }
 
@@ -22,16 +24,23 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
   onAddApp,
   onEditApp,
   onDeleteApp,
+  onDuplicateApp,
   isEditMode,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [focusedId, setFocusedId] = useState<string | null>(null);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; app: App } | null>(null);
 
   const filteredApps = useMemo(() => {
     const sorted = [...apps].sort((a, b) => a.name.localeCompare(b.name));
     if (!searchQuery.trim()) return sorted;
     return sorted.filter((app) => app.name.toLowerCase().includes(searchQuery.toLowerCase()));
   }, [apps, searchQuery]);
+
+  const handleContextMenu = (e: React.MouseEvent, app: App) => {
+    e.preventDefault();
+    setContextMenu({ x: e.clientX, y: e.clientY, app });
+  };
 
   return (
     <div className={styles.overlay} role="dialog" aria-modal="true">
@@ -67,6 +76,7 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
                 isFocused={focusedId === app.id}
                 onFocus={() => setFocusedId(app.id)}
                 onClick={() => onSelectApp(app.id)}
+                onContextMenu={(e) => handleContextMenu(e, app)}
                 showFavoriteToggle={true}
                 onToggleFavorite={() => onToggleFavorite(app.id)}
                 isEditMode={isEditMode}
@@ -83,6 +93,18 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Floating Context Menu inside All Apps Drawer */}
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onClose={() => setContextMenu(null)}
+          onEdit={() => onEditApp(contextMenu.app)}
+          onDuplicate={() => onDuplicateApp(contextMenu.app)}
+          onDelete={() => onDeleteApp(contextMenu.app)}
+        />
+      )}
     </div>
   );
 };

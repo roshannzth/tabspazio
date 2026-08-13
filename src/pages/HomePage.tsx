@@ -139,6 +139,7 @@ export default function HomePage() {
           onAddApp={() => setShowAddApp(true)}
           onEditApp={(app) => setEditingApp(app)}
           onDeleteApp={(app) => setDeleteTarget({ type: 'app', id: app.id, name: app.name })}
+          onDuplicateApp={(app) => handleDuplicateApp(app)}
           isEditMode={isEditMode}
         />
       )}
