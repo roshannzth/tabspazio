@@ -134,10 +134,13 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Centered Down Chevron (Opens All Apps Drawer Modal) */}
+          {/* Centered Glass Pill Button for All Applications */}
           <div className={styles.bottomChevronRow}>
             <button className={styles.chevronBtn} onClick={() => setShowAllApps(true)} title="All Applications (A-Z)">
-              ∨
+              <span>All Apps</span>
+              <svg className={styles.chevronIcon} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
             </button>
           </div>
         </div>
