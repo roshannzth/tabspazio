@@ -24,14 +24,6 @@ export function validateImportData(data: any): { valid: boolean; error?: string 
     return { valid: false, error: 'Apps must be an array' };
   }
   
-  if (data.categories && !Array.isArray(data.categories)) {
-    return { valid: false, error: 'Categories must be an array' };
-  }
-  
-  if (data.pages && !Array.isArray(data.pages)) {
-    return { valid: false, error: 'Pages must be an array' };
-  }
-  
   return { valid: true };
 }
 

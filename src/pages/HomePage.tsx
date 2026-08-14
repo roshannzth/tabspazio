@@ -10,8 +10,6 @@ import { AllAppsDrawer } from '../components/launcher/AllAppsDrawer';
 import { ContextMenu } from '../components/launcher/ContextMenu';
 import { EmptyState } from '../components/launcher/EmptyState';
 import { AddAppSteppedDialog } from '../components/dialogs/AddAppSteppedDialog';
-import { AddPageSteppedDialog } from '../components/dialogs/AddPageSteppedDialog';
-import { AddCategoryDialog } from '../components/dialogs/AddCategoryDialog';
 import { EditAppDialog } from '../components/dialogs/EditAppDialog';
 import { ConfirmDeleteDialog } from '../components/dialogs/ConfirmDeleteDialog';
 import { App } from '../models/App';
@@ -24,8 +22,6 @@ export default function HomePage() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [showAllApps, setShowAllApps] = useState(false);
   const [showAddApp, setShowAddApp] = useState(false);
-  const [showAddPage, setShowAddPage] = useState(false);
-  const [showAddCategory, setShowAddCategory] = useState(false);
   const [editingApp, setEditingApp] = useState<App | null>(null);
 
   const [contextMenu, setContextMenu] = useState<{
@@ -35,7 +31,6 @@ export default function HomePage() {
   } | null>(null);
 
   const [deleteTarget, setDeleteTarget] = useState<{
-    type: 'app' | 'page';
     id: string;
     name: string;
   } | null>(null);
@@ -53,19 +48,14 @@ export default function HomePage() {
 
   const handleSelect = (appId: string) => {
     const app = apps.find((a) => a.id === appId);
-    if (!app) return;
-
-    if (app.type === 'page') {
-      navigate(`/page/${app.pageId}`);
-    } else if (app.type === 'website' && app.url) {
-      openInNewTab(app.url);
-    }
+    if (!app || !app.url) return;
+    openInNewTab(app.url);
   };
 
   const { focusedId, setFocusedId } = useKeyboardNavigation({
     rows,
     onSelect: handleSelect,
-    enabled: !showAllApps && !showAddApp && !showAddPage && !showAddCategory && !editingApp && !contextMenu && !deleteTarget,
+    enabled: !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget,
   });
 
   const handleAppContextMenu = (e: React.MouseEvent, app: App) => {
@@ -76,19 +66,17 @@ export default function HomePage() {
   const handleDuplicateApp = (app: App) => {
     addApp({
       name: `${app.name} (Copy)`,
-      type: app.type,
+      type: 'website',
       url: app.url,
-      pageId: app.pageId,
       icon: app.icon,
       background: app.background,
-      categoryId: app.categoryId,
       isFavorite: app.isFavorite,
     });
   };
 
   const handleWheel = (e: React.WheelEvent) => {
     // Scrolling down on homescreen opens All Applications drawer
-    if (e.deltaY > 30 && !showAllApps && !showAddApp && !showAddPage && !showAddCategory && !editingApp && !contextMenu && !deleteTarget) {
+    if (e.deltaY > 30 && !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget) {
       setShowAllApps(true);
     }
   };
@@ -127,7 +115,7 @@ export default function HomePage() {
                     onContextMenu={(e) => handleAppContextMenu(e, app)}
                     isEditMode={isEditMode}
                     onEdit={() => setEditingApp(app)}
-                    onDelete={() => setDeleteTarget({ type: 'app', id: app.id, name: app.name })}
+                    onDelete={() => setDeleteTarget({ id: app.id, name: app.name })}
                   />
                 ))}
               </div>
@@ -158,7 +146,7 @@ export default function HomePage() {
           onToggleFavorite={(appId) => toggleFavorite(appId)}
           onAddApp={() => setShowAddApp(true)}
           onEditApp={(app) => setEditingApp(app)}
-          onDeleteApp={(app) => setDeleteTarget({ type: 'app', id: app.id, name: app.name })}
+          onDeleteApp={(app) => setDeleteTarget({ id: app.id, name: app.name })}
           onDuplicateApp={(app) => handleDuplicateApp(app)}
           isEditMode={isEditMode}
         />
@@ -180,7 +168,7 @@ export default function HomePage() {
           }}
           onDelete={() => {
             if (contextMenu.app) {
-              setDeleteTarget({ type: 'app', id: contextMenu.app.id, name: contextMenu.app.name });
+              setDeleteTarget({ id: contextMenu.app.id, name: contextMenu.app.name });
             }
           }}
         />
@@ -201,8 +189,6 @@ export default function HomePage() {
 
       {/* Dialogs */}
       {showAddApp && <AddAppSteppedDialog onClose={() => setShowAddApp(false)} />}
-      {showAddPage && <AddPageSteppedDialog onClose={() => setShowAddPage(false)} />}
-      {showAddCategory && <AddCategoryDialog onClose={() => setShowAddCategory(false)} />}
       {editingApp && <EditAppDialog app={editingApp} onClose={() => setEditingApp(null)} />}
     </div>
   );

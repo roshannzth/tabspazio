@@ -1,7 +1,5 @@
 import { StorageSchema, CURRENT_SCHEMA_VERSION } from './storage';
 import { DEFAULT_APPS } from '../data/defaultApps';
-import { DEFAULT_CATEGORIES } from '../data/defaultCategories';
-import { DEFAULT_PAGES } from '../data/defaultPages';
 import { DEFAULT_SETTINGS } from '../models/Settings';
 
 export function migrateData(data: any): StorageSchema {
@@ -11,8 +9,6 @@ export function migrateData(data: any): StorageSchema {
     return {
       version: CURRENT_SCHEMA_VERSION,
       apps: data?.apps || DEFAULT_APPS,
-      categories: data?.categories || DEFAULT_CATEGORIES,
-      pages: data?.pages || DEFAULT_PAGES,
       settings: {
         ...DEFAULT_SETTINGS,
         ...(data?.settings || {}),
@@ -26,6 +22,7 @@ export function migrateData(data: any): StorageSchema {
   return {
     ...data,
     version: CURRENT_SCHEMA_VERSION,
+    apps: data?.apps || [],
     settings: {
       ...DEFAULT_SETTINGS,
       ...(data?.settings || {}),

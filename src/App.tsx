@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider, useAppContext } from './context/AppContext';
 import HomePage from './pages/HomePage';
-import CustomPageView from './pages/CustomPageView';
 import SettingsPage from './pages/SettingsPage';
 import styles from './App.module.css';
 
@@ -49,7 +48,6 @@ function AppContent() {
         <HashRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/page/:pageId" element={<CustomPageView />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </HashRouter>
