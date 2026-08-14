@@ -35,9 +35,9 @@ export default function HomePage() {
     name: string;
   } | null>(null);
 
-  // Favorites for the top floating dock
+  // Favorites for the top floating dock (only apps explicitly marked as isFavorite: true)
   const favoriteApps = useMemo(() => {
-    return apps.filter((app) => app.isFavorite !== false);
+    return apps.filter((app) => Boolean(app.isFavorite));
   }, [apps]);
 
   // Keyboard navigation rows (Favorites row)
@@ -157,7 +157,7 @@ export default function HomePage() {
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
-          isFavorite={contextMenu.app.isFavorite !== false}
+          isFavorite={Boolean(contextMenu.app.isFavorite)}
           onToggleFavorite={() => toggleFavorite(contextMenu.app!.id)}
           onClose={() => setContextMenu(null)}
           onEdit={() => {

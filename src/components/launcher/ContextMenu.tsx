@@ -7,8 +7,6 @@ interface ContextMenuProps {
   isFavorite?: boolean;
   onToggleFavorite?: () => void;
   onEdit: () => void;
-  onMoveToPage?: () => void;
-  onChangeCategory?: () => void;
   onDuplicate?: () => void;
   onDelete: () => void;
   onClose: () => void;
@@ -20,8 +18,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   isFavorite,
   onToggleFavorite,
   onEdit,
-  onMoveToPage,
-  onChangeCategory,
   onDuplicate,
   onDelete,
   onClose,
@@ -74,18 +70,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
       <button className={styles.menuItem} onClick={() => { onEdit(); onClose(); }}>
         <span className={styles.icon}>✏️</span> Edit App
       </button>
-
-      {onMoveToPage && (
-        <button className={styles.menuItem} onClick={() => { onMoveToPage(); onClose(); }}>
-          <span className={styles.icon}>📂</span> Move to Page
-        </button>
-      )}
-
-      {onChangeCategory && (
-        <button className={styles.menuItem} onClick={() => { onChangeCategory(); onClose(); }}>
-          <span className={styles.icon}>🔲</span> Change Category
-        </button>
-      )}
 
       {onDuplicate && (
         <button className={styles.menuItem} onClick={() => { onDuplicate(); onClose(); }}>

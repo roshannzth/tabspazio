@@ -63,7 +63,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const addApp = async (app: Omit<App, 'id' | 'order'>) => {
     const order = apps.length > 0 ? Math.max(...apps.map(a => a.order)) + 1 : 0;
-    const newApp: App = { ...app, id: crypto.randomUUID(), order };
+    const newApp: App = { ...app, isFavorite: app.isFavorite ?? false, id: crypto.randomUUID(), order };
     const newApps = [...apps, newApp];
     setApps(newApps);
     await saveState({ apps: newApps });
@@ -103,7 +103,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const toggleFavorite = async (id: string) => {
-    const newApps = apps.map(app => app.id === id ? { ...app, isFavorite: app.isFavorite === false ? true : false } : app);
+    const newApps = apps.map(app => app.id === id ? { ...app, isFavorite: !app.isFavorite } : app);
     setApps(newApps);
     await saveState({ apps: newApps });
   };

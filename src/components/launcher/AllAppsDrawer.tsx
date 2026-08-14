@@ -104,7 +104,7 @@ export const AllAppsDrawer: React.FC<AllAppsDrawerProps> = ({
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
-          isFavorite={contextMenu.app.isFavorite !== false}
+          isFavorite={Boolean(contextMenu.app.isFavorite)}
           onToggleFavorite={() => onToggleFavorite(contextMenu.app.id)}
           onClose={() => setContextMenu(null)}
           onEdit={() => onEditApp(contextMenu.app)}
