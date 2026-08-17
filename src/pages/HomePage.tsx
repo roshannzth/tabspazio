@@ -24,6 +24,23 @@ export default function HomePage() {
   const [showAddApp, setShowAddApp] = useState(false);
   const [editingApp, setEditingApp] = useState<App | null>(null);
 
+  const [isDockHidden, setIsDockHidden] = useState(() => {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('tvLauncherDockHidden') === 'true';
+    }
+    return false;
+  });
+
+  const handleToggleDock = () => {
+    setIsDockHidden((prev) => {
+      const next = !prev;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('tvLauncherDockHidden', String(next));
+      }
+      return next;
+    });
+  };
+
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
@@ -42,9 +59,9 @@ export default function HomePage() {
 
   // Keyboard navigation rows (Favorites row)
   const rows = useMemo(() => {
-    if (favoriteApps.length === 0) return [];
+    if (favoriteApps.length === 0 || isDockHidden) return [];
     return [favoriteApps.map((a) => a.id)];
-  }, [favoriteApps]);
+  }, [favoriteApps, isDockHidden]);
 
   const handleSelect = (appId: string) => {
     const app = apps.find((a) => a.id === appId);
@@ -55,7 +72,7 @@ export default function HomePage() {
   const { focusedId, setFocusedId } = useKeyboardNavigation({
     rows,
     onSelect: handleSelect,
-    enabled: !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget,
+    enabled: !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget && !isDockHidden,
   });
 
   const handleAppContextMenu = (e: React.MouseEvent, app: App) => {
@@ -93,14 +110,18 @@ export default function HomePage() {
 
   return (
     <div className={styles.container} onWheel={handleWheel}>
-      <Header onOpenSettings={() => navigate('/settings')} />
+      <Header
+        onOpenSettings={() => navigate('/settings')}
+        onToggleDock={handleToggleDock}
+        isDockHidden={isDockHidden}
+      />
 
       {!isEditMode && <HeroHeader />}
 
       {hasNoApps ? (
         <EmptyState onAddApp={() => setShowAddApp(true)} />
       ) : (
-        <div className={styles.mainContent}>
+        <div className={`${styles.mainContent} ${isDockHidden ? styles.dockHidden : ''}`}>
           {/* Favorites Floating Glass Dock Container with Smooth Horizontal Scroll */}
           {favoriteApps.length > 0 && (
             <div className={styles.dockWrapper}>

@@ -15,6 +15,13 @@
   z-index: 10;
   margin-top: auto;
   padding-bottom: clamp(12px, 2vh, 28px);
+  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1), transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dockHidden {
+  opacity: 0;
+  transform: translateY(32px);
+  pointer-events: none;
 }
 
 .dockWrapper {
