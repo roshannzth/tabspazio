@@ -35,7 +35,7 @@
   -webkit-backdrop-filter: blur(32px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: clamp(20px, 2.2vw, 36px);
-  padding: clamp(12px, 1.4vw, 20px) clamp(16px, 1.8vw, 28px);
+  padding: clamp(34px, 3.8vh, 42px) clamp(16px, 1.8vw, 28px) clamp(12px, 1.4vw, 20px) clamp(16px, 1.8vw, 28px);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
   overflow-x: auto;
   max-width: calc(100vw - 80px);
@@ -46,6 +46,55 @@
 
 .floatingDock::-webkit-scrollbar {
   display: none;
+}
+
+.dockCardWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dockTooltip {
+  position: absolute;
+  top: -34px;
+  background: rgba(22, 25, 38, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 5px 14px;
+  color: #ffffff;
+  font-size: clamp(0.78rem, 0.88vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(6px) scale(0.94);
+  transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1), transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+}
+
+.dockTooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(22, 25, 38, 0.94);
+}
+
+.dockCardWrapper:hover .dockTooltip,
+.dockCardFocused .dockTooltip {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .bottomChevronRow {

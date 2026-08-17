@@ -60,7 +60,6 @@ export function AppCard({
       className={`${styles.card} ${isFocused ? styles.focused : ''}`}
       style={cardStyle}
       onClick={onClick}
-      onMouseEnter={onFocus}
       onFocus={onFocus}
       onContextMenu={onContextMenu}
       onKeyDown={handleKeyDown}

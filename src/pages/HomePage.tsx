@@ -104,19 +104,30 @@ export default function HomePage() {
           {/* Favorites Floating Glass Dock Container with Smooth Horizontal Scroll */}
           {favoriteApps.length > 0 && (
             <div className={styles.dockWrapper}>
-              <div className={styles.floatingDock} onWheel={handleDockWheel}>
+              <div
+                className={styles.floatingDock}
+                onWheel={handleDockWheel}
+                onMouseLeave={() => setFocusedId(null)}
+              >
                 {favoriteApps.map((app) => (
-                  <AppCard
+                  <div
                     key={app.id}
-                    app={app}
-                    isFocused={focusedId === app.id}
-                    onFocus={() => setFocusedId(app.id)}
-                    onClick={() => (isEditMode ? setEditingApp(app) : handleSelect(app.id))}
-                    onContextMenu={(e) => handleAppContextMenu(e, app)}
-                    isEditMode={isEditMode}
-                    onEdit={() => setEditingApp(app)}
-                    onDelete={() => setDeleteTarget({ id: app.id, name: app.name })}
-                  />
+                    className={`${styles.dockCardWrapper} ${focusedId === app.id ? styles.dockCardFocused : ''}`}
+                  >
+                    <AppCard
+                      app={app}
+                      isFocused={focusedId === app.id}
+                      onFocus={() => setFocusedId(app.id)}
+                      onClick={() => (isEditMode ? setEditingApp(app) : handleSelect(app.id))}
+                      onContextMenu={(e) => handleAppContextMenu(e, app)}
+                      isEditMode={isEditMode}
+                      onEdit={() => setEditingApp(app)}
+                      onDelete={() => setDeleteTarget({ id: app.id, name: app.name })}
+                    />
+                    <div className={styles.dockTooltip}>
+                      {app.name}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
