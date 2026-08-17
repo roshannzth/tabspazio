@@ -38,6 +38,7 @@ export function AppCard({
   const cardStyle: React.CSSProperties = {
     background: bgColor,
     ...(borderRadius ? { borderRadius } : {}),
+    ['--accent-glow' as any]: accentColor,
   };
 
   if (isFocused) {

@@ -61,6 +61,12 @@
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
+  transition: z-index 180ms ease;
+}
+
+.dockCardWrapper:hover,
+.dockCardFocused {
+  z-index: 50;
 }
 
 .dockTooltip {
