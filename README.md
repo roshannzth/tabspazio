@@ -1,6 +1,6 @@
 # 📺 TabSpazio
 
-A highly customizable, cinematic **Apple TV & Google TV style launcher extension** for your browser's New Tab page. Built with React 18, TypeScript, Vite, and CSS Modules.
+A highly customizable, cinematic **modern UI launcher extension** for your browser's New Tab page. Built with React 18, TypeScript, Vite, and CSS Modules.
 
 ---
 
@@ -16,7 +16,7 @@ A highly customizable, cinematic **Apple TV & Google TV style launcher extension
 
 ## ✨ Features
 
-- 🌟 **Apple TV Glassmorphic Interface**: Cinematic dark frosted glass tiles, dynamic accent glows, and fluid layout scaling.
+- 🌟 **Modern Glassmorphic Interface**: Cinematic dark frosted glass tiles, dynamic accent glows, and fluid layout scaling.
 - 🎨 **Clean Slate Setup**: Starts with zero hardcoded default apps. Add your own custom web apps or import from a JSON configuration file.
 - 👁️ **Dock Visibility Toggle**: One-click quick toggle button right next to settings to easily show/hide the dock for an unobstructed scenic wallpaper view.
 - 🏷️ **Floating Glass Tooltips**: Instant frosted glass name tooltips on mouse hover or remote/keyboard navigation.

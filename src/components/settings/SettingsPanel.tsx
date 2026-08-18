@@ -70,7 +70,7 @@ export default function SettingsPanel() {
             <h2 className={styles.aboutTitle}>TabSpazio</h2>
             <p className={styles.aboutVersion}>Version 1.0.0</p>
             <p className={styles.aboutDesc}>
-              A customizable, cinematic Apple TV & Google TV style app launcher replacement for your browser's New Tab page.
+              A customizable, cinematic modern UI app launcher replacement for your browser's New Tab page.
             </p>
           </div>
         )}

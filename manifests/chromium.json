@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "TabSpazio - New Tab Launcher",
   "version": "1.0.0",
-  "description": "Transform your new tab into an Apple TV-style app launcher",
+  "description": "Transform your new tab into a sleek, customizable modern UI app launcher",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },

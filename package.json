@@ -1,7 +1,7 @@
 {
   "name": "tabspazio",
   "version": "1.0.0",
-  "description": "TabSpazio - Apple TV & Google TV style launcher for your browser's New Tab page",
+  "description": "TabSpazio - A customizable, cinematic modern UI launcher for your browser's New Tab page",
   "private": true,
   "type": "module",
   "scripts": {
