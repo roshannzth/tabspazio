@@ -1,0 +1,53 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all browser extensions
+        run: npm run build:all
+
+      - name: Package Chrome extension
+        run: |
+          cd dist/chrome
+          zip -r ../../tabspazio-chrome.zip .
+
+      - name: Package Firefox extension
+        run: |
+          cd dist/firefox
+          zip -r ../../tabspazio-firefox.zip .
+
+      - name: Package Chromium extension
+        run: |
+          cd dist/chromium
+          zip -r ../../tabspazio-chromium.zip .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: release-${{ github.run_number }}
+          name: Release ${{ github.run_number }}
+          generate_release_notes: true
+          files: |
+            tabspazio-chrome.zip
+            tabspazio-firefox.zip
+            tabspazio-chromium.zip
