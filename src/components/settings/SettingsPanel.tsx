@@ -4,6 +4,7 @@ import ClockSettings from './ClockSettings';
 import GreetingSettings from './GreetingSettings';
 import WeatherSettings from './WeatherSettings';
 import DataSettings from './DataSettings';
+import { AboutSettings } from './AboutSettings';
 import styles from './Settings.module.css';
 
 type SettingsTab = 'appearance' | 'clock' | 'greeting' | 'weather' | 'backup' | 'about';
@@ -65,15 +66,7 @@ export default function SettingsPanel() {
         {activeTab === 'greeting' && <GreetingSettings />}
         {activeTab === 'weather' && <WeatherSettings />}
         {activeTab === 'backup' && <DataSettings />}
-        {activeTab === 'about' && (
-          <div className={styles.aboutCard}>
-            <h2 className={styles.aboutTitle}>TabSpazio</h2>
-            <p className={styles.aboutVersion}>Version 1.0.0</p>
-            <p className={styles.aboutDesc}>
-              A customizable, cinematic modern UI app launcher replacement for your browser's New Tab page.
-            </p>
-          </div>
-        )}
+        {activeTab === 'about' && <AboutSettings />}
       </main>
     </div>
   );
