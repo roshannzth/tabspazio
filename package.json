@@ -1,7 +1,7 @@
 {
-  "name": "tv-launcher-addon",
+  "name": "tabspazio",
   "version": "1.0.0",
-  "description": "Android TV-style launcher for your browser's New Tab page",
+  "description": "TabSpazio - Apple TV & Google TV style launcher for your browser's New Tab page",
   "private": true,
   "type": "module",
   "scripts": {

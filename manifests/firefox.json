@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "TV Launcher Addon - New Tab",
+  "name": "TabSpazio - New Tab Launcher",
   "version": "1.0.0",
-  "description": "Transform your new tab into an Android TV-style app launcher",
+  "description": "Transform your new tab into an Apple TV-style app launcher",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
@@ -10,11 +10,11 @@
   "icons": {
     "128": "icons/icon128.png"
   },
-  "author": "TV Launcher Team",
-  "homepage_url": "https://github.com/roshannzth/tv-launcher-addon",
+  "author": "roshannzth",
+  "homepage_url": "https://github.com/roshannzth/tabspazio",
   "browser_specific_settings": {
     "gecko": {
-      "id": "tv-launcher-addon@example.com",
+      "id": "tabspazio@roshannzth.dev",
       "strict_min_version": "109.0"
     }
   }

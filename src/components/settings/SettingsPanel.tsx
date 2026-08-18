@@ -67,10 +67,10 @@ export default function SettingsPanel() {
         {activeTab === 'backup' && <DataSettings />}
         {activeTab === 'about' && (
           <div className={styles.aboutCard}>
-            <h2 className={styles.aboutTitle}>TV Launcher Addon</h2>
+            <h2 className={styles.aboutTitle}>TabSpazio</h2>
             <p className={styles.aboutVersion}>Version 1.0.0</p>
             <p className={styles.aboutDesc}>
-              A commercial-grade, cross-browser TV style app launcher replacement for your browser's New Tab page.
+              A customizable, cinematic Apple TV & Google TV style app launcher replacement for your browser's New Tab page.
             </p>
           </div>
         )}

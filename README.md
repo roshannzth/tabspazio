@@ -1,4 +1,4 @@
-# 📺 TV Launcher Addon
+# 📺 TabSpazio
 
 A highly customizable, cinematic **Apple TV & Google TV style launcher extension** for your browser's New Tab page. Built with React 18, TypeScript, Vite, and CSS Modules.
 
@@ -7,7 +7,7 @@ A highly customizable, cinematic **Apple TV & Google TV style launcher extension
 ## 📸 Screenshots
 
 ### 1. Homescreen Launcher & Weather Widget
-![TV Launcher Homescreen Preview](./docs/screenshots/homescreen.png)
+![TabSpazio Homescreen Preview](./docs/screenshots/homescreen.png)
 
 ### 2. All Applications Drawer & Search
 ![All Applications Drawer Preview](./docs/screenshots/all_apps_drawer.png)
@@ -18,6 +18,8 @@ A highly customizable, cinematic **Apple TV & Google TV style launcher extension
 
 - 🌟 **Apple TV Glassmorphic Interface**: Cinematic dark frosted glass tiles, dynamic accent glows, and fluid layout scaling.
 - 🎨 **Clean Slate Setup**: Starts with zero hardcoded default apps. Add your own custom web apps or import from a JSON configuration file.
+- 👁️ **Dock Visibility Toggle**: One-click quick toggle button right next to settings to easily show/hide the dock for an unobstructed scenic wallpaper view.
+- 🏷️ **Floating Glass Tooltips**: Instant frosted glass name tooltips on mouse hover or remote/keyboard navigation.
 - 💬 **Customizable Hero Greeting**: Personalize your greeting prefix (e.g., *Hello,*), dynamic title (e.g., *Good Evening*), and subtitle (e.g., *What will you watch today?*).
 - 🌤️ **Live Open-Meteo Weather Integration**: Real-time temperature & condition widget next to the clock:
   - 📍 Built-in city geocoding location search
@@ -26,7 +28,7 @@ A highly customizable, cinematic **Apple TV & Google TV style launcher extension
 - 🎡 **Unlimited Horizontal Carousel Dock**: Add as many favorite apps as you want with smooth horizontal scrolling.
 - 📱 **All Applications Full-Screen Drawer**: Centered A-Z grid drawer with instant search bar, app tile customization, duplication, and quick context menu.
 - ⌨️ **2D Keyboard Navigation**: Fully navigable with arrow keys, Enter, and Escape — optimized for TV screens and media remotes.
-- 💾 **Full Backup & Sync**: Complete JSON export & import for apps, pages, categories, appearance, greeting, clock, and weather configurations.
+- 💾 **Full Backup & Sync**: Complete JSON export & import for apps, appearance, greeting, clock, and weather configurations.
 - 🔒 **100% Private & Local**: Zero tracking, zero ads, zero analytics. All data stays strictly local in your browser's extension storage (`chrome.storage.local`).
 
 ---
@@ -37,8 +39,10 @@ A highly customizable, cinematic **Apple TV & Google TV style launcher extension
 - Node.js (v18 or higher)
 - npm
 
-### 1. Install Dependencies
+### 1. Clone & Install Dependencies
 ```bash
+git clone https://github.com/roshannzth/tabspazio.git
+cd tabspazio
 npm install
 ```
 
@@ -105,7 +109,7 @@ The output extension bundles will be generated in:
 ## 📁 Project Architecture
 
 ```text
-tv-launcher-addon/
+tabspazio/
 ├── manifests/              # Browser manifest manifests (Chrome, Firefox, Chromium)
 ├── scripts/                # Post-build packaging scripts
 ├── src/
@@ -116,9 +120,9 @@ tv-launcher-addon/
 │   │   ├── launcher/       # AppCard, AllAppsDrawer, WeatherWidget, HeroHeader, ContextMenu
 │   │   └── settings/       # Appearance, Clock, Greeting, Weather, Backup & Sync, About
 │   ├── context/            # AppContext state manager & storage persistence
-│   ├── data/               # Default apps & category schemas
+│   ├── data/               # Default apps & schemas
 │   ├── hooks/              # useWeather, useClock, useKeyboardNavigation, useSettings
-│   ├── models/             # TypeScript interfaces (App, Settings, Category)
+│   ├── models/             # TypeScript interfaces (App, Settings)
 │   ├── pages/              # HomePage, SettingsPage
 │   └── services/           # storage, migration, favicon, importExport
 └── vite.config.ts          # Vite extension configuration
@@ -128,7 +132,7 @@ tv-launcher-addon/
 
 ## 🛡️ Privacy & Security
 
-TV Launcher Addon is committed to user privacy:
+TabSpazio is committed to user privacy:
 - No tracking or telemetry
 - No external server dependencies (weather uses Open-Meteo's open public API)
 - All configuration data is stored locally in `chrome.storage.local`
