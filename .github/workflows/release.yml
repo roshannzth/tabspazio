@@ -48,13 +48,23 @@ jobs:
         id: version
         run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
-          generate_release_notes: true
-          files: |
-            tabspazio-chrome.zip
-            tabspazio-firefox.zip
-            tabspazio-chromium.zip
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="v${{ steps.version.outputs.version }}"
+          echo "Target Release Version: $VERSION"
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "Release $VERSION already exists. Updating release assets..."
+            gh release upload "$VERSION" tabspazio-chrome.zip tabspazio-firefox.zip tabspazio-chromium.zip --clobber
+          else
+            echo "Creating new release $VERSION..."
+            gh release create "$VERSION" \
+              tabspazio-chrome.zip \
+              tabspazio-firefox.zip \
+              tabspazio-chromium.zip \
+              --title "$VERSION" \
+              --generate-notes \
+              --latest
+          fi
+          echo "Release successfully published: $(gh release view "$VERSION" --json url -q .url)"
