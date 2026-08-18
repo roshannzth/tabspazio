@@ -14,11 +14,12 @@ export interface StorageSchema {
   categories?: any[];
 }
 
-const STORAGE_KEY = 'tvLauncherData';
+const STORAGE_KEY = 'tabspazioData';
+const LEGACY_STORAGE_KEY = 'tvLauncherData';
 
 export async function loadAllData(): Promise<StorageSchema> {
-  const result = await browserAPI.storage.local.get([STORAGE_KEY]);
-  const data = result[STORAGE_KEY];
+  const result = await browserAPI.storage.local.get([STORAGE_KEY, LEGACY_STORAGE_KEY]);
+  const data = result[STORAGE_KEY] || result[LEGACY_STORAGE_KEY];
   
   if (!data) {
     const initialData: StorageSchema = {
@@ -43,7 +44,7 @@ export async function clearAllData(): Promise<StorageSchema> {
     apps: [],
     settings: DEFAULT_SETTINGS,
   };
-  await browserAPI.storage.local.remove([STORAGE_KEY]);
+  await browserAPI.storage.local.remove([STORAGE_KEY, LEGACY_STORAGE_KEY]);
   await browserAPI.storage.local.set({ [STORAGE_KEY]: cleanData });
   if (typeof localStorage !== 'undefined') {
     localStorage.clear();

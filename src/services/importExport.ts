@@ -8,7 +8,7 @@ export function exportConfiguration(data: StorageSchema): void {
   
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'tv-launcher-config.json';
+  a.download = 'tabspazio-config.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

@@ -26,7 +26,8 @@ export default function HomePage() {
 
   const [isDockHidden, setIsDockHidden] = useState(() => {
     if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem('tvLauncherDockHidden') === 'true';
+      const val = localStorage.getItem('tabspazioDockHidden') ?? localStorage.getItem('tvLauncherDockHidden');
+      return val === 'true';
     }
     return false;
   });
@@ -35,7 +36,7 @@ export default function HomePage() {
     setIsDockHidden((prev) => {
       const next = !prev;
       if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('tvLauncherDockHidden', String(next));
+        localStorage.setItem('tabspazioDockHidden', String(next));
       }
       return next;
     });
