@@ -54,13 +54,13 @@ export default function GreetingSettings() {
           </div>
 
           <div className={styles.settingBlock}>
-            <div className={styles.settingLabel}>Greeting Subtitle</div>
+            <div className={styles.settingLabel}>Greeting Subtitle (Optional)</div>
             <input
               type="text"
               className={styles.textInput}
-              value={clock.greetingSubtitle !== undefined ? clock.greetingSubtitle : 'What will you watch today?'}
+              value={clock.greetingSubtitle !== undefined ? clock.greetingSubtitle : ''}
               onChange={(e) => update({ greetingSubtitle: e.target.value })}
-              placeholder="e.g. What will you watch today?"
+              placeholder="e.g. Add a custom subtitle message (optional)"
             />
           </div>
         </>

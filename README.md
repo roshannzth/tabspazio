@@ -20,7 +20,7 @@ A highly customizable, cinematic **modern UI launcher extension** for your brows
 - 🎨 **Clean Slate Setup**: Starts with zero hardcoded default apps. Add your own custom web apps or import from a JSON configuration file.
 - 👁️ **Dock Visibility Toggle**: One-click quick toggle button right next to settings to easily show/hide the dock for an unobstructed scenic wallpaper view.
 - 🏷️ **Floating Glass Tooltips**: Instant frosted glass name tooltips on mouse hover or remote/keyboard navigation.
-- 💬 **Customizable Hero Greeting**: Personalize your greeting prefix (e.g., *Hello,*), dynamic title (e.g., *Good Evening*), and subtitle (e.g., *What will you watch today?*).
+- 💬 **Customizable Hero Greeting**: Personalize your greeting prefix (e.g., *Hello,*), dynamic title (e.g., *Good Evening*), or add your own custom subtitle message.
 - 🌤️ **Live Open-Meteo Weather Integration**: Real-time temperature & condition widget next to the clock:
   - 📍 Built-in city geocoding location search
   - 🌡️ °C / °F unit toggle

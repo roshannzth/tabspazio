@@ -42,7 +42,7 @@ export const DEFAULT_SETTINGS: Settings = {
     showGreeting: true,
     greetingPrefix: 'Hello,',
     greetingTitle: '',
-    greetingSubtitle: 'What will you watch today?',
+    greetingSubtitle: '',
   },
   appearance: {
     background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',

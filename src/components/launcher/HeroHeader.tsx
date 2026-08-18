@@ -12,7 +12,7 @@ export const HeroHeader: React.FC = () => {
 
   const prefix = clock.greetingPrefix !== undefined ? clock.greetingPrefix : 'Hello,';
   const title = clock.greetingTitle?.trim() ? clock.greetingTitle.trim() : greeting;
-  const subtitle = clock.greetingSubtitle !== undefined ? clock.greetingSubtitle : 'What will you watch today?';
+  const subtitle = clock.greetingSubtitle !== undefined ? clock.greetingSubtitle : '';
 
   return (
     <div className={styles.heroSection}>
