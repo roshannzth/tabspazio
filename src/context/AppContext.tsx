@@ -82,12 +82,26 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const reorderApps = async (appIds: string[]) => {
-    const reorderedApps = appIds.map((id, index) => {
-      const app = apps.find(a => a.id === id)!;
-      return { ...app, order: index };
+    const appMap = new Map(apps.map(a => [a.id, a]));
+    const reordered: App[] = [];
+    
+    // Assign consecutive orders to apps specified in appIds
+    appIds.forEach((id, index) => {
+      const app = appMap.get(id);
+      if (app) {
+        reordered.push({ ...app, order: index });
+        appMap.delete(id);
+      }
     });
-    setApps(reorderedApps);
-    await saveState({ apps: reorderedApps });
+
+    // Retain any remaining apps with sequential orders following reordered set
+    let nextOrder = appIds.length;
+    for (const remainingApp of appMap.values()) {
+      reordered.push({ ...remainingApp, order: nextOrder++ });
+    }
+
+    setApps(reordered);
+    await saveState({ apps: reordered });
   };
 
   const updateSettings = async (updates: Partial<Settings>) => {

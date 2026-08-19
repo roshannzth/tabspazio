@@ -1,5 +1,23 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+  DragStartEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  horizontalListSortingStrategy,
+  useSortable,
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { useAppContext } from '../context/AppContext';
 import { useKeyboardNavigation } from '../hooks/useKeyboardNavigation';
 import { openInNewTab } from '../browser/tabs';
@@ -15,8 +33,73 @@ import { ConfirmDeleteDialog } from '../components/dialogs/ConfirmDeleteDialog';
 import { App } from '../models/App';
 import styles from './HomePage.module.css';
 
+interface SortableDockCardProps {
+  app: App;
+  isFocused: boolean;
+  onFocus: () => void;
+  onClick: () => void;
+  onContextMenu?: (e: React.MouseEvent) => void;
+  isEditMode?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  isDraggingActive?: boolean;
+}
+
+function SortableDockCard({
+  app,
+  isFocused,
+  onFocus,
+  onClick,
+  onContextMenu,
+  isEditMode,
+  onEdit,
+  onDelete,
+  isDraggingActive,
+}: SortableDockCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: app.id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.35 : 1,
+    zIndex: isDragging ? 100 : undefined,
+    touchAction: 'none',
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`${styles.dockCardWrapper} ${isFocused ? styles.dockCardFocused : ''} ${isDragging ? styles.dockCardDragging : ''}`}
+    >
+      <AppCard
+        app={app}
+        isFocused={isFocused && !isDraggingActive}
+        onFocus={onFocus}
+        onClick={onClick}
+        onContextMenu={onContextMenu}
+        isEditMode={isEditMode}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+      {!isDragging && !isDraggingActive && (
+        <div className={styles.dockTooltip}>{app.name}</div>
+      )}
+    </div>
+  );
+}
+
 export default function HomePage() {
-  const { apps, deleteApp, addApp, toggleFavorite } = useAppContext();
+  const { apps, deleteApp, addApp, reorderApps, toggleFavorite } = useAppContext();
   const navigate = useNavigate();
 
   const [isEditMode, setIsEditMode] = useState(false);
@@ -53,10 +136,44 @@ export default function HomePage() {
     name: string;
   } | null>(null);
 
-  // Favorites for the top floating dock (only apps explicitly marked as isFavorite: true)
+  // Favorites for the floating dock (sorted by order)
   const favoriteApps = useMemo(() => {
-    return apps.filter((app) => Boolean(app.isFavorite));
+    return apps
+      .filter((app) => Boolean(app.isFavorite))
+      .sort((a, b) => a.order - b.order);
   }, [apps]);
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 6, // Allows regular clicks without triggering accidental drags
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveDragId(String(event.active.id));
+    setFocusedId(null);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    setActiveDragId(null);
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = favoriteApps.findIndex((a) => a.id === active.id);
+      const newIndex = favoriteApps.findIndex((a) => a.id === over.id);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newOrder = arrayMove(favoriteApps, oldIndex, newIndex);
+        reorderApps(newOrder.map((a) => a.id));
+      }
+    }
+  };
 
   // Keyboard navigation rows (Favorites row)
   const rows = useMemo(() => {
@@ -73,7 +190,7 @@ export default function HomePage() {
   const { focusedId, setFocusedId } = useKeyboardNavigation({
     rows,
     onSelect: handleSelect,
-    enabled: !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget && !isDockHidden,
+    enabled: !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget && !isDockHidden && !activeDragId,
   });
 
   const handleAppContextMenu = (e: React.MouseEvent, app: App) => {
@@ -94,7 +211,7 @@ export default function HomePage() {
 
   const handleWheel = (e: React.WheelEvent) => {
     // Scrolling down on homescreen opens All Applications drawer
-    if (e.deltaY > 30 && !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget) {
+    if (e.deltaY > 30 && !showAllApps && !showAddApp && !editingApp && !contextMenu && !deleteTarget && !activeDragId) {
       setShowAllApps(true);
     }
   };
@@ -123,35 +240,45 @@ export default function HomePage() {
         <EmptyState onAddApp={() => setShowAddApp(true)} />
       ) : (
         <div className={`${styles.mainContent} ${isDockHidden ? styles.dockHidden : ''}`}>
-          {/* Favorites Floating Glass Dock Container with Smooth Horizontal Scroll */}
+          {/* Favorites Floating Glass Dock Container with Drag-and-Drop Reordering */}
           {favoriteApps.length > 0 && (
             <div className={styles.dockWrapper}>
-              <div
-                className={styles.floatingDock}
-                onWheel={handleDockWheel}
-                onMouseLeave={() => setFocusedId(null)}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
               >
-                {favoriteApps.map((app) => (
+                <SortableContext
+                  items={favoriteApps.map((a) => a.id)}
+                  strategy={horizontalListSortingStrategy}
+                >
                   <div
-                    key={app.id}
-                    className={`${styles.dockCardWrapper} ${focusedId === app.id ? styles.dockCardFocused : ''}`}
+                    className={styles.floatingDock}
+                    onWheel={handleDockWheel}
+                    onMouseLeave={() => {
+                      if (!activeDragId) setFocusedId(null);
+                    }}
                   >
-                    <AppCard
-                      app={app}
-                      isFocused={focusedId === app.id}
-                      onFocus={() => setFocusedId(app.id)}
-                      onClick={() => (isEditMode ? setEditingApp(app) : handleSelect(app.id))}
-                      onContextMenu={(e) => handleAppContextMenu(e, app)}
-                      isEditMode={isEditMode}
-                      onEdit={() => setEditingApp(app)}
-                      onDelete={() => setDeleteTarget({ id: app.id, name: app.name })}
-                    />
-                    <div className={styles.dockTooltip}>
-                      {app.name}
-                    </div>
+                    {favoriteApps.map((app) => (
+                      <SortableDockCard
+                        key={app.id}
+                        app={app}
+                        isFocused={focusedId === app.id}
+                        onFocus={() => {
+                          if (!activeDragId) setFocusedId(app.id);
+                        }}
+                        onClick={() => (isEditMode ? setEditingApp(app) : handleSelect(app.id))}
+                        onContextMenu={(e) => handleAppContextMenu(e, app)}
+                        isEditMode={isEditMode}
+                        onEdit={() => setEditingApp(app)}
+                        onDelete={() => setDeleteTarget({ id: app.id, name: app.name })}
+                        isDraggingActive={Boolean(activeDragId)}
+                      />
+                    ))}
                   </div>
-                ))}
-              </div>
+                </SortableContext>
+              </DndContext>
             </div>
           )}
 

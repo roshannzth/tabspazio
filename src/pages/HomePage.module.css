@@ -69,6 +69,15 @@
   z-index: 50;
 }
 
+.dockCardDragging {
+  cursor: grabbing !important;
+  z-index: 100 !important;
+}
+
+.dockCardDragging * {
+  cursor: grabbing !important;
+}
+
 .dockTooltip {
   position: absolute;
   top: -34px;
