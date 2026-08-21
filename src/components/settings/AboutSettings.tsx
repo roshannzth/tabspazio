@@ -1,9 +1,26 @@
 import React, { useState } from 'react';
 import styles from './Settings.module.css';
 
-const CURRENT_VERSION = '1.0.0';
+declare const __APP_VERSION__: string;
+declare const chrome: any;
+
 const GITHUB_REPO = 'roshannzth/tabspazio';
 const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
+
+const getInstalledVersion = (): string => {
+  try {
+    if (typeof chrome !== 'undefined' && chrome.runtime?.getManifest) {
+      const manifestVer = chrome.runtime.getManifest()?.version;
+      if (manifestVer) return manifestVer;
+    }
+  } catch {
+    // Ignore and fallback
+  }
+  if (typeof __APP_VERSION__ !== 'undefined') {
+    return __APP_VERSION__;
+  }
+  return '1.0.1';
+};
 
 type UpdateStatus = 'idle' | 'checking' | 'upToDate' | 'updateAvailable' | 'error';
 
@@ -24,6 +41,7 @@ function isNewerVersion(current: string, latest: string): boolean {
 }
 
 export const AboutSettings: React.FC = () => {
+  const currentVersion = getInstalledVersion();
   const [status, setStatus] = useState<UpdateStatus>('idle');
   const [latestVersion, setLatestVersion] = useState<string>('');
   const [releaseUrl, setReleaseUrl] = useState<string>('');
@@ -47,7 +65,7 @@ export const AboutSettings: React.FC = () => {
         setLatestVersion(tag);
         setReleaseUrl(url);
 
-        if (tag && isNewerVersion(CURRENT_VERSION, tag)) {
+        if (tag && isNewerVersion(currentVersion, tag)) {
           setStatus('updateAvailable');
         } else {
           setStatus('upToDate');
@@ -67,7 +85,7 @@ export const AboutSettings: React.FC = () => {
           setLatestVersion(topTag);
           setReleaseUrl(`${GITHUB_URL}/releases/tag/${topTag}`);
 
-          if (topTag && isNewerVersion(CURRENT_VERSION, topTag)) {
+          if (topTag && isNewerVersion(currentVersion, topTag)) {
             setStatus('updateAvailable');
             return;
           }
@@ -101,7 +119,7 @@ export const AboutSettings: React.FC = () => {
           </div>
           <div>
             <h3 className={styles.aboutTitle}>TabSpazio</h3>
-            <p className={styles.aboutVersion}>v{CURRENT_VERSION}</p>
+            <p className={styles.aboutVersion}>v{currentVersion}</p>
           </div>
         </div>
 
@@ -115,9 +133,9 @@ export const AboutSettings: React.FC = () => {
             <div>
               <div className={styles.updateCardTitle}>Extension Updates</div>
               <div className={styles.updateCardSub}>
-                {status === 'idle' && `Current installed version is v${CURRENT_VERSION}.`}
+                {status === 'idle' && `Current installed version is v${currentVersion}.`}
                 {status === 'checking' && 'Checking GitHub for the latest release...'}
-                {status === 'upToDate' && `TabSpazio is up to date (v${CURRENT_VERSION}).`}
+                {status === 'upToDate' && `TabSpazio is up to date (v${currentVersion}).`}
                 {status === 'updateAvailable' && `New release available: ${latestVersion}!`}
                 {status === 'error' && (errorMessage || 'Could not verify GitHub releases.')}
               </div>
