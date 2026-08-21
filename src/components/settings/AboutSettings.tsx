@@ -118,7 +118,7 @@ export const AboutSettings: React.FC = () => {
                 {status === 'idle' && `Current installed version is v${CURRENT_VERSION}.`}
                 {status === 'checking' && 'Checking GitHub for the latest release...'}
                 {status === 'upToDate' && `TabSpazio is up to date (v${CURRENT_VERSION}).`}
-                {status === 'updateAvailable' && `Update available: ${latestVersion}!`}
+                {status === 'updateAvailable' && `New release available: ${latestVersion}!`}
                 {status === 'error' && (errorMessage || 'Could not verify GitHub releases.')}
               </div>
             </div>
@@ -156,7 +156,7 @@ export const AboutSettings: React.FC = () => {
                 <span className={styles.bannerIcon}>🚀</span>
                 <div>
                   <strong>Version {latestVersion} is available!</strong>
-                  <div className={styles.alertSub}>Download the latest package from GitHub.</div>
+                  <div className={styles.alertSub}>A newer version of TabSpazio is available.</div>
                 </div>
               </div>
               <a
@@ -165,7 +165,7 @@ export const AboutSettings: React.FC = () => {
                 rel="noopener noreferrer"
                 className={styles.downloadReleaseBtn}
               >
-                View Release ↗
+                View Release Notes ↗
               </a>
             </div>
           )}
