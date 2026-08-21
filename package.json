@@ -1,6 +1,6 @@
 {
   "name": "tabspazio",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "TabSpazio - A customizable, cinematic modern UI launcher for your browser's New Tab page",
   "private": true,
   "type": "module",

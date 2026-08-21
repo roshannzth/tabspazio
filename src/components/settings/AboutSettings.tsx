@@ -19,7 +19,7 @@ const getInstalledVersion = (): string => {
   if (typeof __APP_VERSION__ !== 'undefined') {
     return __APP_VERSION__;
   }
-  return '1.0.1';
+  return '1.0.2';
 };
 
 type UpdateStatus = 'idle' | 'checking' | 'upToDate' | 'updateAvailable' | 'error';
